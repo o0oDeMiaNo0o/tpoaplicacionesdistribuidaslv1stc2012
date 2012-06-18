@@ -13,4 +13,6 @@ public class OrdenPedido {
 	private Vector<CotizacionProveedor> items;
 	private int nro;
 	private ODV odv;
+	private String estado;
+	private float estadoCompletitud;
 }
