@@ -1,8 +1,6 @@
-package beans;
+package vistasbeans;
 
-import vistasbeans.ClienteVista;
-
-public class Cliente {
+public class ClienteVista {
 
 	private String condIVA;
 	private String CUIT;
@@ -31,15 +29,6 @@ public class Cliente {
 	}
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
-	}
-	
-	public ClienteVista getVista(){
-		ClienteVista vista=new ClienteVista();
-		vista.setCondIVA(condIVA);
-		vista.setCUIT(CUIT);
-		vista.setDireccion(direccion);
-		vista.setRazonSocial(razonSocial);		
-		return vista;		
 	}
 	
 }
