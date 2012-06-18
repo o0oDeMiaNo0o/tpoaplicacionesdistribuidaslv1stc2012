@@ -8,4 +8,5 @@ public class Remito {
 	private Date fecha;
 	private Vector<ItemCantidad> items;
 	private int nro;
+	private String estadoEnvio;
 }

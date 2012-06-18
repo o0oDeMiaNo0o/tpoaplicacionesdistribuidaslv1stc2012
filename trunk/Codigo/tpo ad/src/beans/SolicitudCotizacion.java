@@ -9,4 +9,5 @@ public class SolicitudCotizacion {
 	private Date fechaEmision;
 	private Vector<ItemCantidad> items;
 	private int nro;
+	private String estado;
 }

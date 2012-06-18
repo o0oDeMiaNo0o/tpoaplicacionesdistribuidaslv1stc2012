@@ -10,5 +10,7 @@ public class OrdenCompra {
 	private int nro;
 	private Vector<OrdenPedido> ordenPedidos;
 	private Proveedor proveedor;
+	private String estado;
+	Private float estadoCompletitud;
 	
 }

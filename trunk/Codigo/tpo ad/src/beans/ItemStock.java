@@ -6,7 +6,8 @@ public class ItemStock {
 
 	private int cantidad;
 	private String estado;
-	private float precio;
+	private float precioCosto;
+	private float precioVenta;
 	private Rodamiento rodamiento;
 	private Date ultimaActualizacion;
 }
