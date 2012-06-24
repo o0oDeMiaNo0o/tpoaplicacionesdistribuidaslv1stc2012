@@ -12,16 +12,22 @@ public class principal {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		sistema = Sistema.getSistema();
-		sistema.almacenarRodamiento("A221", "SKF", "40004", "Irlanda", "SKFA221");
-		sistema.almacenarRodamiento("A222", "SKF", "40005", "Irlanda", "SKFA222");
-		sistema.almacenarRodamiento("A223", "SKF", "40006", "Irlanda", "SKFA223");
+	 	sistema = Sistema.getSistema();
 		
-		sistema.almacenarItemStock(40, "En Stock", 24, 54, 1, new Date());
-		sistema.almacenarItemStock(5, "Critico", 16, 12, 2, new Date());
-		sistema.almacenarItemStock(0, "Sin Stock", 116, 158, 3, new Date());
+    //Alta Item Stock
+		sistema.ItemStock_Alta_Ingreso("A221", "SKF", "40004", "Irlanda", "SKFA221", 40, "En Stock", 24, 54, new Date());
+		sistema.ItemStock_Alta_Confirmacion("A221", 24);
+
+    //Modificaicon Item Stock
+		ItemStock i = sistema.ItemStock_Modificacion_Inicio(1);
+		System.out.println("Modificacion: " + String.valueOf(i.getCantidad()) + " - " + i.getRodamiento().getNroSerie()); 
+		sistema.ItemStock_Modificacion_Confirmacion(1, "A221", "SKF", "40007", "Irlanda", "SKFA221", 1, 71, "Habilitado", 24, 54, new Date());
+		//Eliminación lógica de Item Stock
+    i = sistema.ItemStock_Eliminacion_Inicio(1);
+    System.out.println("Eliminacion: " + String.valueOf(i.getCantidad()) + " - " + i.getRodamiento().getNroSerie()); 
+		sistema.ItemStock_Eliminacion_Confirmacion(1);
 		
+    //Impresion de todos los rodamientos disponibles
 		List <Rodamiento> r = sistema.obtenerRodamientos();
 		for(Rodamiento rod:r){
 			System.out.println(rod.getMarca() + " - " + rod.getNroSerie()); 
