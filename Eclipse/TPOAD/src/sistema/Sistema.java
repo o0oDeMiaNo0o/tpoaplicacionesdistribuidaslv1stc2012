@@ -169,7 +169,6 @@ public class Sistema {
 		return null;
 	}
 
-	//Agregar filtro por estado
 	private ItemStock buscarItemStock(int IdItemStock){
 		for(ItemStock i:stock){
 			if(i.sosItemStock(IdItemStock)){
