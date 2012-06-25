@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Vector;
 import javax.persistence.*;
 
+import vistasbeans.ItemCantidadVista;
+import vistasbeans.SolicitudCotizacionItemVista;
 import vistasbeans.SolicitudCotizacionVista;
 
 @Entity
@@ -59,7 +61,12 @@ public class SolicitudCotizacion {
 		vista.setCliente(cliente.getVista());
 		vista.setEstado(estado);
 		vista.setFechaEmision(fechaEmision);
-		//vista.setItems(items); //hacer la vista del os items
+		Vector<SolicitudCotizacionItemVista> itemsvista=new Vector<SolicitudCotizacionItemVista>();
+		for(SolicitudCotizacionItem i : items){
+			itemsvista.add(i.getVista());
+			//itemsvista.add(i.getVista());			
+		}		
+		vista.setItems(itemsvista);
 		vista.setNro(nro);
 		
 		return vista;

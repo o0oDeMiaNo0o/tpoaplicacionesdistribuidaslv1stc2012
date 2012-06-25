@@ -7,7 +7,7 @@ public class SolicitudCotizacionVista {
 
 	private ClienteVista cliente;
 	private Date fechaEmision;
-	private Vector<ItemCantidadVista> items;
+	private Vector<SolicitudCotizacionItemVista> items;
 	private int nro;
 	private String estado;
 	public ClienteVista getCliente() {
@@ -25,7 +25,7 @@ public class SolicitudCotizacionVista {
 	public Vector<ItemCantidadVista> getItems() {
 		return items;
 	}
-	public void setItems(Vector<ItemCantidadVista> items) {
+	public void setItems(Vector<SolicitudCotizacionItemVista> items) {
 		this.items = items;
 	}
 	public int getNro() {
@@ -40,5 +40,5 @@ public class SolicitudCotizacionVista {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
+		
 }
