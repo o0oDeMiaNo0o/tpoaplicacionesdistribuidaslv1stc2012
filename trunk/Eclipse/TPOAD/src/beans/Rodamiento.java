@@ -2,6 +2,8 @@ package beans;
 
 import javax.persistence.*;
 
+import vistasbeans.RodamientoVista;
+
 @Entity
 @Table(name="Rodamiento")
 public class Rodamiento {
@@ -52,6 +54,17 @@ public class Rodamiento {
 	}
 	public boolean sosRodamiento(int id){
 		return (id == this.id);
+	}
+	
+	public RodamientoVista getVista(){
+		RodamientoVista vista = new RodamientoVista();
+		vista.setCodigo(codigo);
+		vista.setId(id);
+		vista.setMarca(marca);
+		vista.setNroSerie(nroSerie);
+		vista.setOrigen(origen);
+		vista.setSufijo(sufijo);
+		return vista;
 	}
 	
 }

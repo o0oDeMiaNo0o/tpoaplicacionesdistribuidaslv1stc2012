@@ -58,16 +58,73 @@ public class Sistema {
 		return existe;
 	}
 	
-	public void nuevaSolicitudCotizacion(){ //CU1
+	
+	//CU 1
+	public void nuevaSolicitudCotizacion(SolicitudCotizacionVista vista){ 
+		SolicitudCotizacion solicitud = new SolicitudCotizacion();
+		solicitud.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
+		solicitud.setFechaEmision(vista.getFechaEmision());
+		solicitud.setItems(generarItems(vista.getItems()));
+		solicitud.setNro(vista.getNro());
+		solicitud.setEstado(vista.getEstado());
+		solicitudesCotizacion.add(solicitud);
 		
 	}
 	
-	//CU 2
+	public Cliente buscarCliente(String cuit){
+		Cliente c=null;
+		for(Cliente aux : clientes){
+			if(aux.getCUIT()==cuit)
+				c=aux;
+				break;
+		}
+		return c;
+	}
+	
+	public Vector<SolicitudCotizacionItem> generarItems(Vector<SolicitudCotizacionItemVista> itemsVista){
+		Vector<SolicitudCotizacionItem> items=new Vector<SolicitudCotizacionItem>();
+		for(SolicitudCotizacionItemVista vista: itemsVista){
+			SolicitudCotizacionItem item=new SolicitudCotizacionItem();
+			item.setCantidad(vista.getCantidad());
+			item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
+			items.add(item);
+		}		
+		return items;		
+	}
+	
+	public Rodamiento buscarRodamiento(String codigo){
+		Rodamiento r=null;
+		for(Rodamiento aux : rodamientos){
+			if(aux.getCodigo()==codigo){
+				r=aux;
+				break;
+			}
+		}
+		return r;		
+	}
+	
+	//CU 2 falta especificacion
 	public Vector<SolicitudCotizacionVista> solicitudesCotizacion(){
 		Vector<SolicitudCotizacionVista> solicitudes=new Vector<SolicitudCotizacionVista>();
 		for(SolicitudCotizacion c: solicitudesCotizacion)
 			solicitudes.add(c.getVista());
 		return solicitudes;		
+	}
+	
+	
+	//CU 3 talta espedificacion
+	//no dice donde se agregan los nuevos items si es que se solicitan
+	public Vector<ItemCantidadVista> itemsCotizacionesSolicitadasDeUnCliente(String cuil){
+		Vector<ItemCantidadVista> resultado = new Vector<ItemCantidadVista>();
+		Cliente c= buscarCliente(cuil);
+		for(SolicitudCotizacion s : solicitudesCotizacion){
+			if(c==s.getCliente()){
+				for(ItemCantidad item: s.getItems()){
+					resultado.add(item.getVista());					
+				}				
+			}			
+		}
+		return resultado;
 	}
 	
  /* :: CU07 - ABM STOCK RODAMIENTO :: */
