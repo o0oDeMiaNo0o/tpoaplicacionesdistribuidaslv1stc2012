@@ -1,0 +1,112 @@
+/* 
+    Document   : main
+    Created on : 28/06/2012, 00:10:05
+    Author     : Cristus
+    Description:
+        Estilos de todo el sitio.
+*/
+
+root { 
+    display: block;
+}
+
+/*Menu*/
+#menu, #menuSecundario{
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-top-color: #cccccc;
+    border-bottom-color: #cccccc;
+}
+#menu .item, #menuSecundario .item
+{
+    margin-left: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+#menu .item a, #menuSecundario .item a
+{
+    color:#cccccc;
+    text-decoration: none;
+}
+#menu .item a:hover, #menuSecundario .item a:hover
+{
+    color:#666666;
+}
+
+#content
+{
+    padding: 10px;
+}
+
+#content p
+{
+    color: #666666;
+}
+
+#content .productData
+{
+    color: #666666;
+    border: 1px;
+}
+
+/*Mensajes*/
+#statusMessages
+{
+    padding:0px;
+    margin:0px;
+    list-style: none;
+}
+
+.message
+{
+    padding:5px;
+    margin:10px;
+}
+.message.info
+{
+    border:1px solid blue;
+    background-color: #ccccff;
+}
+.message.success
+{
+    border:1px solid green;
+    background-color: #ccffcc;
+}
+.message.warning
+{
+    border:1px solid yellow;
+    background-color: #ffffcc;
+}
+.message.error
+{
+    border:1px solid red;
+    background-color: #ff9999;
+}
+
+/*Botones*/
+div.button
+{
+    margin: 15px 5px 5px 5px;
+}
+div.button span
+{
+    padding: 5px;
+    border:1px solid #666666;
+    background-color: #cccccc;
+}
+div.button a
+{
+    color:#666666;
+    text-decoration: none;
+}
+
+/*Separado*/
+hr.separador
+{
+    width:220px;
+    color:#666666;
+    margin:20px 10px 10px 10px;
+}
