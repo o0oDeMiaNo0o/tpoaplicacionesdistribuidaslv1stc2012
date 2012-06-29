@@ -59,7 +59,7 @@ public class Sistema {
 	}
 	
 	
-	//CU 1
+	//CU 1 Recepción de solicitudes de cotización de rodamientos
 	public void nuevaSolicitudCotizacion(SolicitudCotizacionVista vista){ 
 		SolicitudCotizacion solicitud = new SolicitudCotizacion();
 		solicitud.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
@@ -103,7 +103,7 @@ public class Sistema {
 		return r;		
 	}
 	
-	//CU 2 falta especificacion
+	//CU 2 Solicitud de cotización  - - falta especificacion
 	public Vector<SolicitudCotizacionVista> solicitudesCotizacion(){
 		Vector<SolicitudCotizacionVista> solicitudes=new Vector<SolicitudCotizacionVista>();
 		for(SolicitudCotizacion c: solicitudesCotizacion)
@@ -112,7 +112,7 @@ public class Sistema {
 	}
 	
 	
-	//CU 3 talta espedificacion
+	//CU 3 Recepción de orden de pedido - - Falta especificacion
 	//no dice donde se agregan los nuevos items si es que se solicitan
 	public Vector<ItemCantidadVista> itemsCotizacionesSolicitadasDeUnCliente(String cuil){
 		Vector<ItemCantidadVista> resultado = new Vector<ItemCantidadVista>();
@@ -126,6 +126,8 @@ public class Sistema {
 		}
 		return resultado;
 	}
+	
+		
 	
  /* :: CU07 - ABM STOCK RODAMIENTO :: */
 	/*ALTA DE ITEM DE STOCK*/
@@ -295,3 +297,16 @@ public class Sistema {
 	  
    
 }
+
+
+
+
+/* TODO :: CU04 - Envío de rodamientos (Remito) :: */
+/* TODO :: CU05 - Venta de rodamientos :: */
+/* TODO :: CU06 - Administración de clientes :: */
+/* TODO :: CU08  - Administración de Proveedores :: */
+/* TODO :: CU09 - Administrar listas de precios de proveedores :: */
+/* TODO :: CU10 - Compra de rodamientos :: */
+/* TODO :: CU11 - Recepción de Mercadería :: */
+/* TODO :: CU12 - Determinación del porcentaje de ganancia :: */
+
