@@ -404,3 +404,14 @@ public class Sistema {
 
    
 }
+
+
+
+
+/* TODO :: CU04 - Envío de rodamientos (Remito) :: */
+/* TODO :: CU05 - Venta de rodamientos :: */
+/* TODO :: CU09 - Administrar listas de precios de proveedores :: */
+/* TODO :: CU10 - Compra de rodamientos :: */
+/* TODO :: CU11 - Recepción de Mercadería :: */
+/* TODO :: CU12 - Determinación del porcentaje de ganancia :: */
+/* TODO :: CU13 - Determinación del porcentaje de ganancia :: */
