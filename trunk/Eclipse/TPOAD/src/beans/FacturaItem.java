@@ -1,13 +1,7 @@
 package beans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
 
 @Entity
 @Table(name="FacturaItem")
@@ -20,4 +14,29 @@ public class FacturaItem {
 	@OneToOne
 	@JoinColumn(name="FK_Rodamiento", referencedColumnName="IdRodamiento")
 	private Rodamiento rodamiento;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+	public float getPrecio() {
+		return precio;
+	}
+	public void setPrecio(float precio) {
+		this.precio = precio;
+	}
+	public Rodamiento getRodamiento() {
+		return rodamiento;
+	}
+	public void setRodamiento(Rodamiento rodamiento) {
+		this.rodamiento = rodamiento;
+	}
+	
 }

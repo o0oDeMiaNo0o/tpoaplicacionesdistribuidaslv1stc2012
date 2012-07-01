@@ -1,14 +1,17 @@
 package beans.dao;
 
+import hbt.HibernateUtil;
+
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import beans.*;
-
-import hbt.HibernateUtil;
+import beans.Cliente;
+import beans.ItemStock;
+import beans.Proveedor;
+import beans.Rodamiento;
 
 public class HibernateDAO {
 	private static HibernateDAO instancia = null;
@@ -135,4 +138,47 @@ public class HibernateDAO {
 		return retVal;
 	}	  
 	
+	
+	//CU_06 and CU_08
+	public void grabarCliente(Cliente c) {
+		Session session= getSession();
+		session.beginTransaction();
+		session.persist(c);
+		session.flush();
+		session.beginTransaction().commit();
+		
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public Cliente devolverCliente(String cuit) {
+		Session session = getSession();
+		List<Cliente> cliente = null;
+		Query q = session.createQuery("from Clientes where cuit=?");//ver esto
+		cliente=q.list();
+		session.close();
+		return cliente.get(0);
+	}
+
+	public void grabarProveedor(Proveedor p) {
+		Session session= getSession();
+		session.beginTransaction();
+		session.persist(p);
+		session.flush();
+		session.beginTransaction().commit();
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	public Proveedor devolverProveedor(String razonSocial) {
+		// TODO Auto-generated method stub
+		Session session = getSession();
+		List<Proveedor> proveedor = null;
+		Query q = session.createQuery("from Proveedores where razonSocial=?");//ver esto
+		proveedor=q.list();
+		session.close();
+		return proveedor.get(0);
+	}
+	//END 06/08
+
 }

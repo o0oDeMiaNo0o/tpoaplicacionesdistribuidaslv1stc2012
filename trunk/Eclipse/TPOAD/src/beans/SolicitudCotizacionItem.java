@@ -1,15 +1,8 @@
 package beans;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
 
-import vistasbeans.ItemCantidadVista;
 import vistasbeans.SolicitudCotizacionItemVista;
 
 @Entity

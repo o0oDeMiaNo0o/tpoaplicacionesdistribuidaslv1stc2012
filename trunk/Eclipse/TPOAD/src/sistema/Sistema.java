@@ -127,7 +127,61 @@ public class Sistema {
 		return resultado;
 	}
 	
+	/* :: CU04 - Envío de rodamientos (Remito) :: */
+	public void nuevoRemito_a_Cliente(RemitoClienteVista vista){ 
+		RemitoCliente remitoCl = new RemitoCliente();
+		remitoCl.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
+		remitoCl.setFecha(vista.getFecha());
+		remitoCl.setItems(generarItemsRemito(vista.getItems()));
+		remitoCl.setNro(vista.getNro());
+		remitoCl.setEstadoEnvio(vista.getEstadoEnvio());
+		remitosCliente.add(remitoCl);
 		
+	}
+	
+
+	private List<RemitoItem> generarItemsRemito(Vector<ItemCantidadVista> itemsRemVista) {
+		Vector<RemitoItem> itemsRemito = new Vector<RemitoItem>();
+		for(ItemCantidadVista vista: itemsRemVista){
+			RemitoItem item=new RemitoItem();
+			item.setCantidad(vista.getCantidad());
+			item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
+			itemsRemito.add(item);
+		}		
+		return itemsRemito;		
+	}
+	/* :: CU05 - Venta de Rodamientos (Facturacion) :: */
+	public void nuevaFactura(FacturaVista vista){ 
+		Factura factura = new Factura();
+		/* factura.setCliente(buscarCliente(vista.getRemito().getCliente().getCUIT()));*/ 
+		factura.setFechaEmision(vista.getFechaEmision());
+		factura.setFechaVencimiento(vista.getFechaVencimiento());
+		factura.setItemsFactura((List<FacturaItem>) generarItemsFactura(vista.getItemsFactura()));
+		factura.setNro(vista.getNro());
+		factura.setDescuentoContado(vista.getDescuentoContado());
+		factura.setFinanciacion(vista.getFinanciacion());
+		facturas.add(factura);
+		
+	}
+	
+
+	private List<FacturaItem> generarItemsFactura(Vector<FacturaItemVista> itemsFacturaVista) {
+		Vector<FacturaItem> itemsFactura = new Vector<FacturaItem>();
+		for(FacturaItemVista vista: itemsFacturaVista){
+			FacturaItem item=new FacturaItem();
+			item.setId(vista.getId());
+			item.setCantidad(vista.getCantidad());
+			item.setPrecio(vista.getPrecio());
+			item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
+			itemsFactura.add(item);
+		}
+	return itemsFactura;
+	}
+
+
+	
+	
+	
 	
  /* :: CU07 - ABM STOCK RODAMIENTO :: */
 	/*ALTA DE ITEM DE STOCK*/
@@ -200,7 +254,7 @@ public class Sistema {
 	
 	private void actualizarItemStockEnColeccion(ItemStock i){
 		for(ItemStock iActual: stock){
-			if(iActual.sosItemStock(i.getId())){
+			if((iActual).sosItemStock(i.getId())){
 				iActual.setCantidad(i.getCantidad());
 				iActual.setEstado(i.getEstado());
 				iActual.setPrecioCosto(i.getPrecioCosto());
@@ -296,17 +350,127 @@ public class Sistema {
 	}	
 	  
    
+
+
+//CU_06 & CU_08////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//alta Cliente
+	
+	public void addCliente(String cuit, String direccion, String razonSocial, String condIVA){
+	Cliente c=  new Cliente();
+	c.setCondIVA(condIVA);
+	c.setCUIT(cuit);
+	c.setDireccion(direccion);
+	c.setRazonSocial(razonSocial);
+	srvDAO.agregarCli(c);
+	clientes.add(c);
+	
+	}
+	//alta proveedor
+	public void addProveedor(String direccion, String razonSocial, String telefono){
+	Proveedor p=  new Proveedor();
+	if (proveedorExiste(razonSocial)){
+	p.setDireccion(direccion);
+	p.setRazonSocial(razonSocial);
+	p.setListaPrecios(null);
+	p.setTelefono(telefono);
+	srvDAO.agregarPro(p);
+	proveedores.add(p);
+	}else{
+	System.out.println("Este cliente ya existe");
+	}
+	
+	}
+	
+	//recuperar cliente
+	private Cliente getCliente(String cuit){
+	Cliente c= null;
+	if(clienteExiste(cuit)){
+	c= srvDAO.getClient(cuit);
+	}
+	
+	return c;
+	}
+	
+	//recuperar proveedor
+	private Proveedor getProveedor(String razonSocial){
+	Proveedor p= null;
+	if(proveedorExiste(razonSocial)){
+	p= srvDAO.getProveedor(razonSocial);
+	}
+	
+	return p;
+	}
+	
+	//modificar cliente
+	public void modifyClient(String cuit, String CondIVA, String direccion, String razonSocial, String estado){
+	if(clienteExiste(cuit)){
+	Cliente c = getCliente(cuit);
+	c.setCondIVA(CondIVA);
+	c.setCUIT(cuit);
+	c.setDireccion(direccion);
+	c.setRazonSocial(razonSocial);
+	c.setEstado(estado);
+	System.out.println("El cliente ha sido actualizado");
+	}else{
+	System.out.println("Este cliente no existe, por favor ir al menu principal y crear un nuevo cliente");
+	}
+	}
+	
+	
+	//modificar proveedor
+	public void modifyProveedor (String razonSocial, String direccion, String telefono, String estado){
+		if(proveedorExiste(razonSocial)){
+		Proveedor p1 = null;
+		p1=getProveedor(razonSocial);
+		p1.setDireccion(p1.getDireccion());
+		p1.setTelefono(telefono);
+		p1.setEstado(estado);
+		
+		System.out.println("El cliente ha sido actualizado");
+		}
+		}
+	
+	public void bajaCliente(String cuit){
+	if(clienteExiste(cuit)){
+	Cliente c = getCliente(cuit);
+	c.setEstado("Desactivado");
+	System.out.println("El cliente ha sido eliminado");
+	}
+	}
+	
+	
+	public void bajaProveedor(String razonSocial){
+	if(proveedorExiste(razonSocial)){
+	Proveedor p = getProveedor(razonSocial);
+	p.setEstado("Desactivado");
+	System.out.println("El proveedor ha sido eliminado");
+	}
+	}
+	
+	
+	private boolean proveedorExiste(String razonSocial){
+	boolean existe= false;
+	for(Proveedor p: proveedores){
+	if(p.getRazonSocial()== razonSocial)
+	existe=true;
+	}
+	return existe;
+	}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 }
 
+/* :: CU09 - Administrar listas de precios de proveedores ::  GO TO Proveedores.java*/
 
 
-
-/* TODO :: CU04 - Envío de rodamientos (Remito) :: */
-/* TODO :: CU05 - Venta de rodamientos :: */
-/* TODO :: CU06 - Administración de clientes :: */
-/* TODO :: CU08  - Administración de Proveedores :: */
-/* TODO :: CU09 - Administrar listas de precios de proveedores :: */
 /* TODO :: CU10 - Compra de rodamientos :: */
 /* TODO :: CU11 - Recepción de Mercadería :: */
 /* TODO :: CU12 - Determinación del porcentaje de ganancia :: */
+/* TODO :: CU13 - Determinación del porcentaje de ganancia :: */
+
 
