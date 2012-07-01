@@ -3,9 +3,10 @@ package beans;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-import javax.persistence.*;
 
-import vistasbeans.ItemCantidadVista;
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
+
 import vistasbeans.SolicitudCotizacionItemVista;
 import vistasbeans.SolicitudCotizacionVista;
 

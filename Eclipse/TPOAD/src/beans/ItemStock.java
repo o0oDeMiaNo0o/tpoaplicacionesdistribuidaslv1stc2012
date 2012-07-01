@@ -2,7 +2,8 @@ package beans;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
 
 @Entity
 @Table(name="StockRodamiento")

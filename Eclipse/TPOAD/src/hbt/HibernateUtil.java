@@ -2,7 +2,30 @@ package hbt;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
-import beans.*;
+
+import beans.Cliente;
+import beans.Cotizacion;
+import beans.CotizacionItem;
+import beans.Factura;
+import beans.FacturaItem;
+import beans.Financiacion;
+import beans.ItemPrecio;
+import beans.ItemStock;
+import beans.ListaPrecio;
+import beans.ODV;
+import beans.OrdenCompra;
+import beans.OrdenCompraItem;
+import beans.OrdenPedido;
+import beans.OrdenPedidoItem;
+import beans.Proveedor;
+import beans.Remito;
+import beans.RemitoCliente;
+import beans.RemitoItem;
+import beans.RemitoProveedor;
+import beans.RemitoTransporte;
+import beans.Rodamiento;
+import beans.SolicitudCotizacion;
+import beans.SolicitudCotizacionItem;
 
 public class HibernateUtil {
     private static final SessionFactory sessionFactory;

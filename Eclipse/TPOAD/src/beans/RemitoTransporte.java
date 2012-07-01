@@ -1,8 +1,8 @@
 package beans;
 
 import java.util.List;
-import java.util.Vector;
-import javax.persistence.*;
+
+import org.hibernate.annotations.Entity;
 
 @Entity
 public class RemitoTransporte extends Remito{

@@ -1,9 +1,7 @@
 package beans;
 
-import java.util.List;
-import java.util.Vector;
-
-import javax.persistence.*;
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
 
 @Entity
 @Table(name="OrdenPedidoItem")

@@ -1,7 +1,10 @@
 package beans.srv;
 
 import java.util.List;
+
+import beans.Cliente;
 import beans.ItemStock;
+import beans.Proveedor;
 import beans.Rodamiento;
 import beans.dao.HibernateDAO;
 
@@ -51,4 +54,27 @@ public class ServicioDAO {
 	public List<ItemStock> getItemStock(){
 		return dao.getItemStock();
 	}	
+	
+	//CU_06 and CU_08
+	public void agregarCli(Cliente c) {
+		dao.grabarCliente(c);
+		
+	}
+
+	public Cliente getClient(String cuit) {
+		return dao.devolverCliente(cuit);
+	}
+
+	public void agregarPro(Proveedor p) {
+		dao.grabarProveedor(p);
+		
+	}
+
+	public Proveedor getProveedor(String razonSocial) {
+		return dao.devolverProveedor(razonSocial);
+	}
+	//END 06/08
+
+	
 }
+

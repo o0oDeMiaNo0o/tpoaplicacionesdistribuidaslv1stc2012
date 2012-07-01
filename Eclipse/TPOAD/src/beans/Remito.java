@@ -2,7 +2,10 @@ package beans;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
+
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.Table;
+import org.hibernate.envers.configuration.metadata.InheritanceType;
 
 @Entity
 @Table(name="Remito")
@@ -16,4 +19,30 @@ public abstract class Remito {
 	@JoinColumn(name="FK_Remito", referencedColumnName="IdRemito")
 	protected List<RemitoItem> items;
 	protected String estadoEnvio;
+	public int getNro() {
+		return nro;
+	}
+	public void setNro(int nro) {
+		this.nro = nro;
+	}
+	public Date getFecha() {
+		return fecha;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public List<RemitoItem> getItems() {
+		return items;
+	}
+	public void setItems(List<RemitoItem> items) {
+		this.items = items;
+	}
+	public String getEstadoEnvio() {
+		return estadoEnvio;
+	}
+	public void setEstadoEnvio(String estadoEnvio) {
+		this.estadoEnvio = estadoEnvio;
+	}
+	
+	
 }
