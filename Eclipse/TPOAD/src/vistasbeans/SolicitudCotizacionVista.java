@@ -22,7 +22,7 @@ public class SolicitudCotizacionVista {
 	public void setFechaEmision(Date fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
-	public Vector<ItemCantidadVista> getItems() {
+	public Vector<SolicitudCotizacionItemVista> getItems() {
 		return items;
 	}
 	public void setItems(Vector<SolicitudCotizacionItemVista> items) {

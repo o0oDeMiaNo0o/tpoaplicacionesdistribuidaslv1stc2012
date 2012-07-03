@@ -9,6 +9,7 @@ import beans.CotizacionItem;
 import beans.Factura;
 import beans.FacturaItem;
 import beans.Financiacion;
+import beans.Ganancia;
 import beans.ItemPrecio;
 import beans.ItemStock;
 import beans.ListaPrecio;
@@ -56,7 +57,8 @@ public class HibernateUtil {
            	 config.addAnnotatedClass(RemitoTransporte.class);           	        	 
            	 config.addAnnotatedClass(RemitoProveedor.class);           	        	 
            	 config.addAnnotatedClass(Factura.class);           	        	 
-           	 config.addAnnotatedClass(FacturaItem.class);           	        	 
+           	 config.addAnnotatedClass(FacturaItem.class);     
+           	 config.addAnnotatedClass(Ganancia.class);           	            	
              sessionFactory = config.buildSessionFactory();
         }
         catch (Throwable ex)

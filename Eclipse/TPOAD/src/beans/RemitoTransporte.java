@@ -2,7 +2,7 @@ package beans;
 
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
+import javax.persistence.*;
 
 @Entity
 public class RemitoTransporte extends Remito{

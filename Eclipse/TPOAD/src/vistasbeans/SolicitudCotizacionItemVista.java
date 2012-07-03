@@ -6,7 +6,11 @@ public class SolicitudCotizacionItemVista {
 		private int id;
 		private int cantidad;
 		private RodamientoVista rodamiento;
+		private String estado;
 
+		public String getEstado() {
+			return estado;
+		}
 
 		public int getId() {
 			return id;

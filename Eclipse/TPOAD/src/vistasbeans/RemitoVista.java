@@ -6,7 +6,7 @@ import java.util.Vector;
 public class RemitoVista {
 
 	private Date fecha;
-	private Vector<ItemCantidadVista> items;
+	private Vector<RemitoItemVista> items;
 	private int nro;
 	private String estadoEnvio;
 	public Date getFecha() {
@@ -15,10 +15,10 @@ public class RemitoVista {
 	public void setFechaEmision(Date fecha) {
 		this.fecha = fecha;
 	}
-	public Vector<ItemCantidadVista> getItems() {
+	public Vector<RemitoItemVista> getItems() {
 		return items;
 	}
-	public void setItems(Vector<ItemCantidadVista> items) {
+	public void setItems(Vector<RemitoItemVista> items) {
 		this.items = items;
 	}
 	public int getNro() {

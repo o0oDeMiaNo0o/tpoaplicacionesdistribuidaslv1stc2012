@@ -1,19 +1,68 @@
 package vistasbeans;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import beans.Proveedor;
 
-public class ListaPrecioVista {
+public class ListaPrecioVista implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int descuentoContado;
 	private Date fechaEmision;
 	private Date fechaVencimiento;
-	private Vector<FinanciacionVista> financiacion;
-	private Vector<ItemPrecioVista> items;
+	private List<FinanciacionVista> financiacion;
+	private List<ItemPrecioVista> items;
 	private int nro;
 	private int nroListReemplazo;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}	
+	public ListaPrecioVista(int doc, Date femis, Date fvenc, List <FinanciacionVista> f, List <ItemPrecioVista> i, int nro, int nroReemp){
+		this.descuentoContado = doc;
+		this.fechaEmision = femis;
+		this.fechaVencimiento = fvenc;
+		this.financiacion = f;
+		this.items = i;
+		this.nro = nro;
+		this.nroListReemplazo = nroReemp;
+	}
+	
+	public int getDescuentoContado() {
+		return descuentoContado;
+	}
+
+	public Date getFechaEmision() {
+		return fechaEmision;
+	}
+
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public List<FinanciacionVista> getFinanciacion() {
+		return financiacion;
+	}
+
+	public List<ItemPrecioVista> getItems() {
+		return items;
+	}
+
+	public int getNro() {
+		return nro;
+	}
+
+	public int getNroListReemplazo() {
+		return nroListReemplazo;
+	}
+	/*
 	public int getDescuentoContado() {
 		return descuentoContado;
 	}
@@ -57,5 +106,5 @@ public class ListaPrecioVista {
 		this.nroListReemplazo = nroListReemplazo;
 	}
 	
-	
+	*/
 }

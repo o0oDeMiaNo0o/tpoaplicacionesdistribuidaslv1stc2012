@@ -1,7 +1,6 @@
 package beans;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="OrdenCompraItem")
@@ -14,4 +13,12 @@ public class OrdenCompraItem {
 	@OneToOne
 	@JoinColumn(name="FK_Rodamiento", referencedColumnName="IdRodamiento")
 	private Rodamiento rodamiento;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

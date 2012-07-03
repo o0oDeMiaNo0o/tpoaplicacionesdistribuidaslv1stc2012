@@ -3,7 +3,7 @@ package beans;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
+import javax.persistence.*;
 
 @Entity
 public class RemitoCliente extends Remito{
@@ -16,6 +16,15 @@ public class RemitoCliente extends Remito{
 			inverseJoinColumns=@JoinColumn(name="FK_OrdenPedido", referencedColumnName="IdOrdenPedido")
 	)			
 	private List<OrdenPedido> ordenPedido;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}	
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -27,8 +36,6 @@ public class RemitoCliente extends Remito{
 	}
 	public void setOrdenPedido(List<OrdenPedido> ordenPedido) {
 		this.ordenPedido = ordenPedido;
-	
-		
 	}
 	
 	

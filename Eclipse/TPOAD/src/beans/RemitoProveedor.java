@@ -1,6 +1,6 @@
 package beans;
 
-import org.hibernate.annotations.Entity;
+import javax.persistence.*;
 
 @Entity
 public class RemitoProveedor extends Remito{

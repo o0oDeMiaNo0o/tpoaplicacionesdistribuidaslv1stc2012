@@ -3,8 +3,7 @@ package beans;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="Cotizacion")
@@ -37,4 +36,11 @@ public class Cotizacion {
 	)
 	private List<SolicitudCotizacion> solicitudes;
 	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

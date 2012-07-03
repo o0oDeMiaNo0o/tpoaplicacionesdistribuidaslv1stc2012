@@ -25,6 +25,7 @@ public class Sistema {
 	private List<Rodamiento> rodamientos;
 	private List<SolicitudCotizacion> solicitudesCotizacion;
 	private List<ItemStock> stock;
+	private List<Ganancia> ganancia; 
 	
 	private Sistema(){
 		clientes=new ArrayList<Cliente>();
@@ -40,6 +41,7 @@ public class Sistema {
 		rodamientos=new ArrayList<Rodamiento>();
 		solicitudesCotizacion=new ArrayList<SolicitudCotizacion>();
 		stock=new ArrayList<ItemStock>();
+		ganancia=new ArrayList<Ganancia>();		
 	}
 	
 	public static Sistema getSistema(){
@@ -81,7 +83,7 @@ public class Sistema {
 		return c;
 	}
 	
-	public Vector<SolicitudCotizacionItem> generarItems(Vector<SolicitudCotizacionItemVista> itemsVista){
+	public Vector<SolicitudCotizacionItem> generarItems(List<SolicitudCotizacionItemVista> itemsVista){
 		Vector<SolicitudCotizacionItem> items=new Vector<SolicitudCotizacionItem>();
 		for(SolicitudCotizacionItemVista vista: itemsVista){
 			SolicitudCotizacionItem item=new SolicitudCotizacionItem();
@@ -91,7 +93,7 @@ public class Sistema {
 		}		
 		return items;		
 	}
-	
+		
 	public Rodamiento buscarRodamiento(String codigo){
 		Rodamiento r=null;
 		for(Rodamiento aux : rodamientos){
@@ -114,13 +116,13 @@ public class Sistema {
 	
 	//CU 3 Recepción de orden de pedido - - Falta especificacion
 	//no dice donde se agregan los nuevos items si es que se solicitan
-	public Vector<ItemCantidadVista> itemsCotizacionesSolicitadasDeUnCliente(String cuil){
-		Vector<ItemCantidadVista> resultado = new Vector<ItemCantidadVista>();
+	public Vector<ItemCotizacionVista> itemsCotizacionesSolicitadasDeUnCliente(String cuil){
+		Vector<ItemCotizacionVista> resultado = new Vector<ItemCotizacionVista>();
 		Cliente c= buscarCliente(cuil);
 		for(SolicitudCotizacion s : solicitudesCotizacion){
 			if(c==s.getCliente()){
-				for(ItemCantidad item: s.getItems()){
-					resultado.add(item.getVista());					
+				for(SolicitudCotizacionItem item: s.getItems()){
+					//resultado.add(item.getVista());					
 				}				
 			}			
 		}
@@ -132,7 +134,10 @@ public class Sistema {
 		RemitoCliente remitoCl = new RemitoCliente();
 		remitoCl.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
 		remitoCl.setFecha(vista.getFecha());
-		remitoCl.setItems(generarItemsRemito(vista.getItems()));
+		//Fijense que cuando hice lo Hibernate cada documento tiene sus
+		//Items: Cotizacion -> CotizacionItem; Factura -> FacturaItem y demas
+		//Ya no usamos una clase como item genérico de varios documentos ya que se hace dificil hacer las anotaciones
+		//remitoCl.setItems(generarItemsRemito(vista.getItems()));
 		remitoCl.setNro(vista.getNro());
 		remitoCl.setEstadoEnvio(vista.getEstadoEnvio());
 		remitosCliente.add(remitoCl);
@@ -140,9 +145,9 @@ public class Sistema {
 	}
 	
 
-	private List<RemitoItem> generarItemsRemito(Vector<ItemCantidadVista> itemsRemVista) {
+	private List<RemitoItem> generarItemsRemito(Vector<ItemCotizacionVista> itemsRemVista) {
 		Vector<RemitoItem> itemsRemito = new Vector<RemitoItem>();
-		for(ItemCantidadVista vista: itemsRemVista){
+		for(ItemCotizacionVista vista: itemsRemVista){
 			RemitoItem item=new RemitoItem();
 			item.setCantidad(vista.getCantidad());
 			item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
@@ -156,10 +161,10 @@ public class Sistema {
 		/* factura.setCliente(buscarCliente(vista.getRemito().getCliente().getCUIT()));*/ 
 		factura.setFechaEmision(vista.getFechaEmision());
 		factura.setFechaVencimiento(vista.getFechaVencimiento());
-		factura.setItemsFactura((List<FacturaItem>) generarItemsFactura(vista.getItemsFactura()));
+		//factura.setItemsFactura((List<FacturaItem>) generarItemsFactura(vista.getItemsFactura()));
 		factura.setNro(vista.getNro());
 		factura.setDescuentoContado(vista.getDescuentoContado());
-		factura.setFinanciacion(vista.getFinanciacion());
+		//factura.setFinanciacion(vista.getFinanciacion());
 		facturas.add(factura);
 		
 	}
@@ -309,6 +314,20 @@ public class Sistema {
 		}
 		return null;
 	}
+	
+	private Proveedor buscarProveedor(int id){
+		for(Proveedor r: proveedores){
+			if(r.sosProveedor(id)){
+				return r;
+			}
+		}
+		Proveedor r = srvDAO.getProveedor(id);
+		if(r!=null){
+			proveedores.add(r);
+			return r;
+		}
+		return null;
+	}		
 
 	private Rodamiento generarRodamiento(int id, String codigo, String marca, String nroSerie, String origen, String sufijo){
 		Rodamiento r = new Rodamiento();
@@ -410,7 +429,7 @@ public class Sistema {
 	c.setCUIT(cuit);
 	c.setDireccion(direccion);
 	c.setRazonSocial(razonSocial);
-	c.setEstado(estado);
+	//c.setEstado(estado);
 	System.out.println("El cliente ha sido actualizado");
 	}else{
 	System.out.println("Este cliente no existe, por favor ir al menu principal y crear un nuevo cliente");
@@ -434,7 +453,7 @@ public class Sistema {
 	public void bajaCliente(String cuit){
 	if(clienteExiste(cuit)){
 	Cliente c = getCliente(cuit);
-	c.setEstado("Desactivado");
+	//c.setEstado("Desactivado");
 	System.out.println("El cliente ha sido eliminado");
 	}
 	}
@@ -459,6 +478,88 @@ public class Sistema {
 	}
 
 
+/* :: CU09 Administrar listado de precios :: */
+	
+	public List <Proveedor> obtenerProveedor(){
+		return srvDAO.getProveedor();
+	}
+	
+	public ListaPrecio listadoPrecio_iniciar(int proveedor, int descuentoContado, Date fechaVencimiento, int nroListReemplazo){
+		ListaPrecio retVal = new ListaPrecio();
+		retVal.setDescuentoContado(descuentoContado);
+		retVal.setFechaEmision(new Date());
+		retVal.setFechaVencimiento(fechaVencimiento);
+		retVal.setNroListReemplazo(nroListReemplazo);
+		retVal.setNro(0);
+		Proveedor p = buscarProveedor(proveedor);
+		p.agregarListadoPrecio(retVal);
+		return retVal;
+	}
+
+	public void listadoPrecio_agregarFinanciacion(int proveedor, int nroReemplazo, int cuota, float recargo){
+		Financiacion f = new Financiacion();
+		f.setCuotas(cuota);
+		f.setRecargo(recargo);
+		for(Proveedor r: proveedores){
+			if(r.sosProveedor(proveedor)){
+				for(ListaPrecio l: r.getListaPrecios()){
+					if(l.getNro() == 0 && l.getNroListReemplazo() == nroReemplazo){
+						l.agregarFinanciacion(f);
+					}
+				}
+			}
+		}
+	}
+	
+	public void listadoPrecio_agregarItemPrecio(int proveedor, int nroReemplazo, int rodamiento, int cantidad, float precioCosto, float precioVenta){
+		ItemPrecio i = new ItemPrecio();
+		i.setCantidad(cantidad);
+		i.setPrecioCosto(precioCosto);
+		i.setPrecioVenta(precioVenta);
+		Rodamiento r = this.buscarRodamiento(rodamiento);
+		i.setRodamiento(r);
+		
+		for(Proveedor p: proveedores){
+			if(p.sosProveedor(proveedor)){
+				for(ListaPrecio l: p.getListaPrecios()){
+					if(l.getNro() == 0 && l.getNroListReemplazo() == nroReemplazo){
+						l.agregarItemPrecio(i);
+					}
+				}
+			}
+		}
+	}
+
+	public boolean listadoPrecio_confirmar(int proveedor, int nroReemplazo){
+		ListaPrecio li = null; int idRet = 0; Proveedor prov = null;
+		for(Proveedor p: proveedores){
+			if(p.sosProveedor(proveedor)){
+				prov = p;
+				for(ListaPrecio l: p.getListaPrecios()){
+					if(l.getNro() == 0 && l.getNroListReemplazo() == nroReemplazo){
+						li = l;
+					}
+				}
+			}
+		}
+		if(li != null){
+			idRet = srvDAO.grabarListaPrecio(li);
+			li.setNro(idRet);
+			srvDAO.actualizarProveedor(prov);
+		}
+		return (idRet > 0);
+	}
+	
+	/* FIN CU 9 */
+	
+	/* :: CU 13 COMPARATIVA DE PRECIO :: */
+
+	public ProveedorVista comparativaPrecio_iniciar_(String nroSerie, String marca, List <String> marcas, String origen){
+		return srvDAO.comparativaDePrecio(nroSerie, marca, marcas, origen);
+	}	
+	
+	/* FIN CU 13*/	
+	
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

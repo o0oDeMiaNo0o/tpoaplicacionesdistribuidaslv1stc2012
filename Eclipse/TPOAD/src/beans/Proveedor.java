@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 import vistasbeans.FacturaItemVista;
 import vistasbeans.ItemPrecioVista;
 import vistasbeans.ListaPrecioVista;
+import vistasbeans.ProveedorVista;
 
 @Entity
 @Table(name="Proveedor")
@@ -24,21 +24,21 @@ public class Proveedor {
 	private List<ListaPrecio> listaPrecios;
 	private String razonSocial;
 	private String telefono;
-
-	private String estado;
 	private ArrayList<Rodamiento> rodamientos;
-	
+	private String estado;
+
 	public String getEstado() {
 		return estado;
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-	
+	}	
 	public int getNro() {
 		return nro;
 	}
-
+	public void setNro(int nro) {
+		this.nro = nro;
+	}
 	public String getDireccion() {
 		return direccion;
 	}
@@ -64,6 +64,10 @@ public class Proveedor {
 		this.telefono = telefono;
 	}
 	
+	public boolean sosProveedor(int id){
+		return (id == this.nro);
+	}	
+	
 	/* TODO :: CU09 - Administrar listas de precios de proveedores ::*/
 	public void nuevaListaPrecioProveedor(ListaPrecioVista vista){ 
 		ListaPrecio listaPrecioProveedor = new ListaPrecio();
@@ -71,9 +75,9 @@ public class Proveedor {
 		listaPrecioProveedor.setFechaEmision(vista.getFechaEmision());
 		listaPrecioProveedor.setFechaVencimiento(vista.getFechaVencimiento());
 		listaPrecioProveedor.setDescuentoContado(vista.getDescuentoContado());
-		listaPrecioProveedor.setFinanciacion(vista.getFinanciacion());
+		//listaPrecioProveedor.setFinanciacion(vista.getFinanciacion());
 		listaPrecioProveedor.setNroListReemplazo(vista.getNroListReemplazo());
-		listaPrecioProveedor.setItems(generarItemsLista (vista.getItems());
+		//listaPrecioProveedor.setItems(generarItemsLista (vista.getItems()));
 		listaPrecios.add(listaPrecioProveedor);
 		
 	}
@@ -103,5 +107,18 @@ public class Proveedor {
 			return r;		
 		}
 	
+		public void agregarListadoPrecio(ListaPrecio l){
+			if(!ArrayList.class.isInstance(listaPrecios)){
+				listaPrecios = new ArrayList<ListaPrecio>();
+			}
+			this.listaPrecios.add(l);
+		}
 
+		public ProveedorVista vista(){
+			List<ListaPrecioVista> lp = new ArrayList<ListaPrecioVista>();
+			for(ListaPrecio l:listaPrecios){
+				lp.add(l.vista());
+			}
+			return (new ProveedorVista(direccion, lp, nro, razonSocial, telefono));
+		}
 }

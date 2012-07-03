@@ -1,11 +1,27 @@
 package vistasbeans;
 
-public class ItemPrecioVista {
+import java.io.Serializable;
+
+public class ItemPrecioVista implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private int cantidad;
 	private float precioCosto;
 	private float precioVenta;
 	private RodamientoVista rodamiento;
+	
+	public ItemPrecioVista(int id, int cant, float pc, float pv, RodamientoVista r){
+		this.id = id;
+		this.cantidad = cant;
+		this.precioCosto = pc;
+		this.precioVenta = pv;
+		this.rodamiento = r;
+	}
+		
 	public int getCantidad() {
 		return cantidad;
 	}

@@ -1,7 +1,6 @@
 package beans;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 import vistasbeans.RodamientoVista;
 
@@ -53,9 +52,6 @@ public class Rodamiento {
 	public void setSufijo(String sufijo) {
 		this.sufijo = sufijo;
 	}
-	public boolean sosRodamiento(int id){
-		return (id == this.id);
-	}
 	
 	public RodamientoVista getVista(){
 		RodamientoVista vista = new RodamientoVista();
@@ -67,5 +63,13 @@ public class Rodamiento {
 		vista.setSufijo(sufijo);
 		return vista;
 	}
+	
+	public boolean sosRodamiento(int id){
+		return (id == this.id);
+	}
+	
+	public RodamientoVista vista(){
+		return (new RodamientoVista(id, codigo, marca, nroSerie, origen, sufijo));
+	}	
 	
 }

@@ -3,8 +3,7 @@ package beans;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="OrdenCompra")
@@ -25,7 +24,14 @@ public class OrdenCompra {
 	@OneToOne
 	@JoinColumn(name="FK_Proveedor", referencedColumnName="IdProveedor")
 	private Proveedor proveedor;
-	private String estado;
 	private float estadoCompletitud;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 	
 }

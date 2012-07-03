@@ -1,7 +1,6 @@
 package beans;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="ODV")
