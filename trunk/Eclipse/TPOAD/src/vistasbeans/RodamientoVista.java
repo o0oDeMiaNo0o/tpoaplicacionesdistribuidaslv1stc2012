@@ -1,6 +1,8 @@
 package vistasbeans;
 
-public class RodamientoVista {
+import java.io.Serializable;
+
+public class RodamientoVista  implements Serializable {
 
 	private int id;
 	private String codigo; //creo que por ahí debería ser un string
@@ -8,6 +10,20 @@ public class RodamientoVista {
 	private String nroSerie;
 	private String origen;
 	private String sufijo;
+	
+	public RodamientoVista(int id, String codigo, String marca, String nroSerie, String origen, String sufijo){
+		this.id = id;
+		this.codigo = codigo;
+		this.marca = marca;
+		this.nroSerie = nroSerie;
+		this.origen = origen;
+		this.sufijo = sufijo;
+	}
+	
+	public RodamientoVista(){
+		
+	}		
+	
 	public int getId() {
 		return id;
 	}

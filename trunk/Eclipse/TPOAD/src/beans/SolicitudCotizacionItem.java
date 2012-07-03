@@ -1,7 +1,6 @@
 package beans;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 import vistasbeans.SolicitudCotizacionItemVista;
 
@@ -16,7 +15,14 @@ public class SolicitudCotizacionItem {
 	@OneToOne
 	@JoinColumn(name="FK_Rodamiento", referencedColumnName="IdRodamiento")
 	private Rodamiento rodamiento;
-	
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}	
 	public SolicitudCotizacionItemVista getVista(){
 		SolicitudCotizacionItemVista vista= new SolicitudCotizacionItemVista();
 		vista.setCantidad(cantidad);

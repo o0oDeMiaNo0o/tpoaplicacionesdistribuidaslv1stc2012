@@ -12,6 +12,11 @@ public class FacturaVista {
 	private int nro;
 	private RemitoClienteVista remito;
 	private Vector<ItemCotizacionVista> itemsFactura;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
 	public float getDescuentoContado() {
 		return descuentoContado;
 	}

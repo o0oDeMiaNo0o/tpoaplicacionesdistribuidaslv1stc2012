@@ -2,8 +2,7 @@ package beans;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="StockRodamiento")
@@ -62,6 +61,8 @@ public class ItemStock {
 	public void setUltimaActualizacion(Date ultimaActualizacion) {
 		this.ultimaActualizacion = ultimaActualizacion;
 	}
-	
+	public boolean sosItemStock(int id){
+		return (id == this.id);
+	}	
 	
 }

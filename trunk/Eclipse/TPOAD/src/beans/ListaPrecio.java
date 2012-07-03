@@ -1,10 +1,14 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
+
+import vistasbeans.FinanciacionVista;
+import vistasbeans.ItemPrecioVista;
+import vistasbeans.ListaPrecioVista;
 
 @Entity
 @Table(name="ListaPrecio")
@@ -26,10 +30,17 @@ public class ListaPrecio {
 	@JoinColumn(name="FK_ListaPrecio", referencedColumnName="IdListaPrecio")
 	private List<ItemPrecio> items;
 	private int nroListReemplazo;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 	public int getNro() {
 		return nro;
 	}
-		
 	
 	public void setNro(int nro) {
 		this.nro = nro;
@@ -71,7 +82,25 @@ public class ListaPrecio {
 		this.nroListReemplazo = nroListReemplazo;
 	}
 	
+	public void agregarFinanciacion(Financiacion f){
+		this.financiacion.add(f);
+	}
 	
+	public void agregarItemPrecio(ItemPrecio i){
+		this.items.add(i);
+	}
+	
+	public ListaPrecioVista vista(){
+		List<ItemPrecioVista> i = new ArrayList<ItemPrecioVista>();
+		for(ItemPrecio it:items){
+			i.add(it.vista());
+		}
+		List<FinanciacionVista> f = new ArrayList<FinanciacionVista>();
+		for(Financiacion fi:financiacion){
+			f.add(fi.vista());
+		}		
+		return (new ListaPrecioVista(descuentoContado, fechaEmision, fechaVencimiento, f, i, nro, nroListReemplazo));
+	}	
 	
 	
 }

@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 
 import beans.Cliente;
 import beans.ItemStock;
+import beans.ListaPrecio;
 import beans.Proveedor;
 import beans.Rodamiento;
 
@@ -39,7 +40,7 @@ public class HibernateDAO {
 	public ItemStock getItemStock(int id){
 		Session session = getSession();
 		ItemStock retVal = null;
-		Query q = session.createQuery("from StockRodamiento s where s.IdStock = ?");
+		Query q = session.createQuery("from ItemStock s where s.id = ?");
 		q.setInteger(0, id);
 		retVal = (ItemStock) q.uniqueResult();
 		session.close();
@@ -50,7 +51,7 @@ public class HibernateDAO {
 	public Rodamiento getRodamiento(int id){
 		Session session = getSession();
 		Rodamiento retVal = null;
-		Query q = session.createQuery("from Rodamiento r where r.IdRodamiento = ?");
+		Query q = session.createQuery("from Rodamiento r where r.id = ?");
 		q.setInteger(0, id);
 		retVal = (Rodamiento) q.uniqueResult();
 		session.close();
@@ -181,4 +182,98 @@ public class HibernateDAO {
 	}
 	//END 06/08
 
+	/* CU09 - ABM */
+	@SuppressWarnings("unchecked")
+	public List<Proveedor> getProveedor(){
+		Session session = getSession();
+		List<Proveedor> retVal = null;
+		Query q = session.createQuery("from Proveedor");
+		retVal = q.list();
+		session.close();
+		return retVal;
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public Proveedor getProveedor(int id){
+		Session session = getSession();
+		Proveedor retVal = null;
+		Query q = session.createQuery("from Proveedor p where p.nro = ?");
+		q.setInteger(0, id);
+		retVal = (Proveedor) q.uniqueResult();
+		session.close();
+		return retVal;
+	}	
+	
+	public int grabarListaPrecio(ListaPrecio l){
+		Session session = getSession();
+		session.beginTransaction();
+		int retVal = (Integer) session.save(l);
+		session.flush();
+		session.beginTransaction().commit();
+		return retVal;
+	}
+	
+	public void actualizarProveedor(Proveedor p){
+		Session session = getSession();
+		session.beginTransaction();
+		session.update(p);
+		session.flush();
+		session.beginTransaction().commit();
+	}	
+	
+	/* FIN CU09 - ABM */
+	
+	/* COMPARATIVA DE PRECIO */
+	
+	
+	@SuppressWarnings("unchecked")
+	public List <Object[]> comparativaDePrecio(String nroSerie, String marca, List <String> marcas, String origen){
+		String sQuery = "select p, li, it, r from Proveedor p join p.listaPrecios li join li.items it join it.rodamiento r where li.id = " +
+						"(select max(l.id) from Proveedor pr join pr.listaPrecios l where l.id = li.id) " +
+						"and r.nroSerie = :nroSerie ";
+		
+		
+		if(!marca.equals("") && !marcas.isEmpty()){ //Agrego la marca y su listado
+			sQuery = sQuery +"and (r.marca = :marca or r.marca in (:marcas)) ";
+		}else{
+			if(!marca.equals("") && marcas.isEmpty()){ //Agrego la Marca
+				sQuery = sQuery + "and r.marca = :marca ";
+			}
+			if(marca.equals("") && !marcas.isEmpty()){ //Agrego el listado de marcas
+				sQuery = sQuery + "and r.marca in (:marcas) ";
+			}
+		}
+		if(!origen.equals("")){ //Agrego el origen
+			sQuery = sQuery + "and origen = :origen ";			
+		}
+
+		
+		Session session = getSession();
+		List <Object[]> retVal = null;
+		Query q = session.createQuery(sQuery);
+		
+		
+		q.setString("nroSerie", nroSerie);
+		if(!marca.equals("") && !marcas.isEmpty()){ //Agrego la marca y su listado
+			q.setString("marca", marca);
+			q.setParameterList("marcas", marcas);
+		}else{
+			if(!marca.equals("") && marcas.isEmpty()){ //Agrego la Marca
+				q.setString("marca", marca);
+			}
+			if(marca.equals("") && !marcas.isEmpty()){ //Agrego el listado de marcas
+				q.setParameterList("marcas", marcas);
+			}
+		}		
+		if(!origen.equals("")){ //Agrego el origen
+			q.setString("origen", origen);
+		}
+		
+		retVal = q.list();
+		session.close();
+		return retVal;		
+	}
+	
+	/* FIN COMPARATIVA DE PRECIO */	
+	
 }

@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 import vistasbeans.SolicitudCotizacionItemVista;
 import vistasbeans.SolicitudCotizacionVista;
@@ -25,7 +24,7 @@ public class SolicitudCotizacion {
 	@JoinColumn(name="FK_SolicitudCotizacion", referencedColumnName="IdSolicitudCotizacion")
 	private List<SolicitudCotizacionItem> items;
 	private String estado;
-	
+
 	public Cliente getCliente() {
 		return cliente;
 	}

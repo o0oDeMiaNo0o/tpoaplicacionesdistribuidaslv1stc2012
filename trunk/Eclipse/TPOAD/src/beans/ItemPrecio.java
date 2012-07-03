@@ -2,8 +2,9 @@ package beans;
 
 import java.util.ArrayList;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
+
+import vistasbeans.ItemPrecioVista;
 
 @Entity
 @Table(name="ListaPrecioItem")
@@ -49,5 +50,7 @@ public class ItemPrecio {
 		this.rodamiento = rodamiento;
 	}
 	
-	
+	public ItemPrecioVista vista(){
+		return (new ItemPrecioVista(id, cantidad, precioCosto, precioVenta, rodamiento.vista()));
+	}
 }

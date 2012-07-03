@@ -15,4 +15,13 @@ public class OrdenPedidoVista {
 	private ODVVista odv;
 	private String estado;
 	private float estadoCompletitud;
+	private String origen;
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public String getOrigen() {
+		return origen;
+	}
 }

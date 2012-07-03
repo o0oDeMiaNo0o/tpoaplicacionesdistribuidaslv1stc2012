@@ -8,6 +8,11 @@ public class RemitoClienteVista extends RemitoVista{
 
 	private ClienteVista cliente;
 	private Vector<OrdenPedidoVista> ordenPedido;
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
 	public ClienteVista getCliente() {
 		return cliente;
 	}

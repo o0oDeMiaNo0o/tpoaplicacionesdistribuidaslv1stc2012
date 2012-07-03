@@ -3,9 +3,7 @@ package beans;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
-import org.hibernate.envers.configuration.metadata.InheritanceType;
+import javax.persistence.*;
 
 @Entity
 @Table(name="Remito")

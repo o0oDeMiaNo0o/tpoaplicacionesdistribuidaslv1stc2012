@@ -3,8 +3,7 @@ package beans;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Entity;
-import org.hibernate.annotations.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="OrdenPedido")
@@ -30,7 +29,6 @@ public class OrdenPedido {
 	@JoinColumn(name="FK_OrdenPedido", referencedColumnName="IdOrdenPedido")
 	private List<OrdenPedidoItem> items;
 	
-	private String estado;
 	private float estadoCompletitud;
 	private int descuentoContado;
 	private Date fechaEmision;	
@@ -41,4 +39,13 @@ public class OrdenPedido {
 			inverseJoinColumns=@JoinColumn(name="FK_Cotizacion", referencedColumnName="IdCotizacion")
 	)
 	private List<Cotizacion> cotizacion;
+	private String estado;
+	private String origen;
+
+	public String getEstado() {
+		return estado;
+	}
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

@@ -14,4 +14,8 @@ public class CotizacionVista {
 	private int nro;
 	private Vector<SolicitudCotizacionVista> solicitudes;
 	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
 }
