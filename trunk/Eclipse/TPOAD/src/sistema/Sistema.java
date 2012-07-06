@@ -570,6 +570,49 @@ public class Sistema {
 
 
 /* TODO :: CU10 - Compra de rodamientos :: */
+
+public void nuevoOrdenCompra(OrdenCompraVista vista){ 
+	OrdenCompra oc = new OrdenCompra();
+	oc.setProveedor(getProveedor(vista.getProveedor().getNro())); 
+	oc.setFechaEmision(vista.getFechaEmision());
+	oc.setNro(vista.getNro());
+	oc.setEstado(vista.getEstado());
+	oc.setEstadoCompletitud(vista.getEstadoCompletitud());
+	oc.setItems(vista.getItems());
+	oc.setOrdenPedidos(vista.getOrdenPedidos());
+	oc.
+	ordenesCompra.add(oc);
+	
+}
+
+
+private List<OrdenCompraItem> generarItemsOC(Vector<OrdenPedidoItemVista> itemOrdenCompraVista) {
+	Vector<OrdenCompraItem> itemsOC = new Vector<OrdenCompraItem>();
+	for(OrdenPedidoItemVista vista: itemOrdenCompraVista)
+	{
+		OrdenCompraItem item=new OrdenCompraItem();
+		item.setCantidad(vista.getCantidad());
+		item.setEstado(vista.getEstado());
+		item.setPrecio(vista.getPrecio());
+		item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
+		itemsOC.add(item);
+	}		
+	return itemsOC;		
+	}
+
+
+
+private List<RemitoItem> generarItemsRemito(Vector<ItemCotizacionVista> itemsRemVista) {
+	Vector<RemitoItem> itemsRemito = new Vector<RemitoItem>();
+	for(ItemCotizacionVista vista: itemsRemVista){
+		RemitoItem item=new RemitoItem();
+		item.setCantidad(vista.getCantidad());
+		item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
+		itemsRemito.add(item);
+	}		
+	return itemsRemito;		
+
+
 /* TODO :: CU11 - Recepción de Mercadería :: */
 /* TODO :: CU12 - Determinación del porcentaje de ganancia :: */
 /* TODO :: CU13 - Determinación del porcentaje de ganancia :: */
