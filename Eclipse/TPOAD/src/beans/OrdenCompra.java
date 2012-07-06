@@ -33,5 +33,41 @@ public class OrdenCompra {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	public int getNro() {
+		return nro;
+	}
+	public void setNro(int nro) {
+		this.nro = nro;
+	}
+	public Date getFechaEmision() {
+		return fechaEmision;
+	}
+	public void setFechaEmision(Date fechaEmision) {
+		this.fechaEmision = fechaEmision;
+	}
+	public List<OrdenCompraItem> getItems() {
+		return items;
+	}
+	public void setItems(List<OrdenCompraItem> items) {
+		this.items = items;
+	}
+	public List<OrdenPedido> getOrdenPedidos() {
+		return ordenPedidos;
+	}
+	public void setOrdenPedidos(List<OrdenPedido> ordenPedidos) {
+		this.ordenPedidos = ordenPedidos;
+	}
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+	public float getEstadoCompletitud() {
+		return estadoCompletitud;
+	}
+	public void setEstadoCompletitud(float estadoCompletitud) {
+		this.estadoCompletitud = estadoCompletitud;
+	}
 	
 }
