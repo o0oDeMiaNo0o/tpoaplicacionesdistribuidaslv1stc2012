@@ -6,7 +6,7 @@ import java.util.Vector;
 public class OrdenCompraVista {
 
 	private Date fechaEmision;
-	private Vector<ItemCotizacionVista> items;
+	private Vector<OrdenCompraItemVista> items;
 	private int nro;
 	private Vector<OrdenPedidoVista> ordenPedidos;
 	private ProveedorVista proveedor;
@@ -18,10 +18,11 @@ public class OrdenCompraVista {
 	public void setFechaEmision(Date fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
-	public Vector<ItemCotizacionVista> getItems() {
+
+	public Vector<OrdenCompraItemVista> getItems() {
 		return items;
 	}
-	public void setItems(Vector<ItemCotizacionVista> items) {
+	public void setItems(Vector<OrdenCompraItemVista> items) {
 		this.items = items;
 	}
 	public int getNro() {
