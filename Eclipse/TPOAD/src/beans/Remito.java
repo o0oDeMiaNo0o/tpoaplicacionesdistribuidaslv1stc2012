@@ -12,6 +12,7 @@ public abstract class Remito {
 	@Id @Column(name="IdRemito")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	protected int nro;
+	@Column(name="Fecha de Generacion")
 	protected Date fecha;
 	@OneToMany
 	@JoinColumn(name="FK_Remito", referencedColumnName="IdRemito")

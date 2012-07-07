@@ -69,5 +69,9 @@ public class OrdenCompra {
 	public void setEstadoCompletitud(float estadoCompletitud) {
 		this.estadoCompletitud = estadoCompletitud;
 	}
+	public boolean sosOrdenCompra(int nro2) {
+		
+		return (nro2==this.getNro());
+	}
 	
 }

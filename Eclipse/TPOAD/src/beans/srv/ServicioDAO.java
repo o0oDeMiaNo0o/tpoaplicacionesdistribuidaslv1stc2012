@@ -6,11 +6,15 @@ import java.util.List;
 import vistasbeans.ProveedorVista;
 
 import beans.Cliente;
+import beans.Factura;
 import beans.Financiacion;
 import beans.ItemPrecio;
 import beans.ItemStock;
 import beans.ListaPrecio;
 import beans.ODV;
+import beans.OrdenCompra;
+import beans.OrdenPedido;
+import beans.OrdenPedidoItem;
 import beans.Proveedor;
 import beans.Remito;
 import beans.RemitoCliente;
@@ -216,6 +220,68 @@ public class ServicioDAO {
 	public int grabarItemStock(RemitoItem ri) {
 		// TODO Auto-generated method stub
 		return dao.grabarItenStock(ri);
+	}
+
+	public List<RemitoItem> getItemsRemito(int remitoID) {
+		
+		return dao.getItemsRemito(remitoID);
+	}
+
+	public boolean updateRemitoCliente(RemitoCliente rc) {
+		
+		return dao.updateRemitoCliente (rc);
+	}
+
+	public boolean updateRemitoClienteSt(int nroRemito, String estado) {
+			return dao.updateRemitoClienteSt(nroRemito, estado);
+	}
+
+	public int addFactura(Factura factura) {
+		return dao.grabarFactura(factura);
+	}
+
+	public List<Factura> getfacturas() {
+		return dao.getfacturas();
+	}
+
+	public Factura getUniqueFactura(int nroFactura) {
+		return dao.getUniqueFactura(nroFactura);
+	}
+
+	public boolean updateFacturaSt(int nroFactura, String estado) {
+		return dao.updateFacturaSt(nroFactura, estado);
+	}
+
+	public int addOrdenCompra(OrdenCompra oc) {
+		return dao.grabarOrdenCompra(oc);		
+	}
+
+	public boolean updateOPISt(int id, String string) {
+		return dao.updateOPISt(id, string);
+	}
+
+	public OrdenPedidoItem getUniqueOPI(int idOPI) {
+		return dao.getUniqueOPI(idOPI);
+	}
+
+	public boolean updateOrdenPedidoStPedidoProveedor(int nroOP, String string) {
+		return dao.updateOrdenPedidoStPedidoProveedor(nroOP,string);
+	}
+
+	public OrdenPedido getUniqueOrdenPedido(int nroOP) {
+		return dao.getUniqueOrdenPedido(nroOP);
+	}
+
+	public List<OrdenCompra> getOrdenCompra() {
+		return dao.getOrdenCompra();
+	}
+
+	public boolean updateOrdenCompraStCerrado(int nroOC, String string) {
+		return dao.updateOrdenCompraStCerrado(nroOC,string);
+	}
+
+	public OrdenCompra getUniqueOrdenCompra(int nroOC) {
+		return dao.getUniqueOrdenCompra(nroOC);
 	}
 
 

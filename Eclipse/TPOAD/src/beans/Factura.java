@@ -2,8 +2,15 @@ package beans;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import javax.persistence.*;
+
+import vistasbeans.FacturaVista;
+import vistasbeans.FinanciacionVista;
+import vistasbeans.ItemCotizacionVista;
+import vistasbeans.RemitoClienteVista;
+import vistasbeans.RodamientoVista;
 
 @Entity
 @Table(name="Factura")
@@ -75,8 +82,14 @@ public class Factura {
 		this.itemsFactura = itemsFactura;
 	}
 	
-
-		// TODO Auto-generated method stub
+	public boolean sosFactura(int nro){
+		return (nro == this.nro);
+	}
+	
+	public FacturaVista vista(){
+		FacturaVista fv = new FacturaVista(nro, fechaEmision, null, null, descuentoContado, fechaEmision, null, estado);
+	return fv;
+	}	
 		
 	}
 	

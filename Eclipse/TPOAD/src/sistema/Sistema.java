@@ -139,18 +139,69 @@ public class Sistema {
 		remitoCl.setEstadoEnvio(vista.getEstadoEnvio());
 		remitosCliente.add(remitoCl);
 		srvDAO.addRemitoCliente(remitoCl);
+		
+		//TODO	public void chgItemPedidoSt();
+		//TODO public void chgPorcCompletitudOP();
 	}
 	
 	
 	
-// TODO	public void chgRemitoClienteSt();
+	public RemitoCliente RemitoCliente_Modificacion_Inicio(int NroRemitoCliente){
+		return this.getUniqueRemitoC(NroRemitoCliente);		
+	}
+
+	public boolean RemitoCliente_Modificacion_Confirmacion(int nroRemito, Date fecha, List<RemitoItem> items, String estado, Cliente cl,  List<OrdenPedido> op){
+		 boolean retVal = false;
+		 RemitoCliente rc = generarRemitoCliente(nroRemito,fecha,items,estado,cl, op);
+		 retVal = srvDAO.updateRemitoCliente(rc);
+		 if(retVal){
+			 actualizarRemitoClienteEnColeccion(rc);
+		}
+		 return retVal;
+	}
 	
+	
+	private RemitoCliente generarRemitoCliente(int nroRemito, Date fecha, List<RemitoItem> items, String estado, Cliente cl,  List<OrdenPedido> op ){
+		RemitoCliente rc = new RemitoCliente();
+		rc.setNro(nroRemito);
+		rc.setFecha(fecha);
+		rc.setItems(items);
+		rc.setEstadoEnvio(estado);
+		rc.setCliente(cl);
+		rc.setOrdenPedido(op);
+		return rc;
+	}
+	
+	
+
+	private void actualizarRemitoClienteEnColeccion(RemitoCliente rc){
+		for(RemitoCliente rcActual: remitosCliente){
+			if(rcActual.sosRemitoCliente(rc.getNro())){
+				 rcActual.setEstado(rc.getEstado());
+			}
+		}
+	}
+	
+	
+public boolean chgRemitoClienteSt(int nroRemito){
+		boolean retVal = false;
+		this.actualizarRemitoClienteSt(nroRemito, "Facturado");
+		retVal = srvDAO.updateRemitoClienteSt(nroRemito, "Facturado");
+		return retVal;
+	}	
+	
+private void actualizarRemitoClienteSt(int nroRemito, String estado) {
+		RemitoCliente rc = this.getUniqueRemitoC(nroRemito);
+		rc.setEstado(estado);
+		rc.setEstadoEnvio(estado);
+		this.actualizarRemitoClienteEnColeccion(rc);
+		
+	}
+
+
 // TODO	public void chgRemitoProveedorSt();
 	
 // TODO	public void chgRemitoTransporteSt();
-	
-// TODO	public void chgItemPedidoSt();
-	
 	
 			
 	public List <RemitoCliente> obtenerRemitoCl(){
@@ -168,22 +219,7 @@ public class Sistema {
 		return remitosTransporte;
 	}
 	
-	private ItemStock buscarItemStock(int IdItemStock){
-		for(ItemStock i:stock){
-			if(i.sosItemStock(IdItemStock)){
-				return i;
-			}
-		}
-		ItemStock i = srvDAO.getItemStock(IdItemStock);
-		if(i != null){
-			stock.add(i);
-			return i;
-		}	
-		return null;
-	}
-	
-	
-	
+		
 	public Remito getUniqueRemito(int NroRemito){
 		Remito r= null;
 		if(remitoExiste(NroRemito)){
@@ -233,9 +269,6 @@ public class Sistema {
 		return existe;
 		}
 	
-	
-	
-	
 
 	private List<RemitoItem> generarItemsRemito(Vector<RemitoItemVista> itemsRemVista) {
 		Vector<RemitoItem> itemsRemito = new Vector<RemitoItem>();
@@ -243,8 +276,8 @@ public class Sistema {
 			RemitoItem item=new RemitoItem();
 			item.setCantidad(vista.getCantidad());
 			item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
-			
 			itemsRemito.add(item);
+			grabarItemRemito(item);
 		}		
 		return itemsRemito;		
 	}
@@ -255,26 +288,57 @@ public class Sistema {
 		return srvDAO.grabarItemStock(ri);
 	}	
 	  
-	
+	public List <RemitoItem> obtenerItemsRemito(int remitoID){
+		List <RemitoItem> ri= srvDAO.getItemsRemito(remitoID);
+		return ri;
+	}
 	
 	
 	/* :: CU05 - Venta de Rodamientos (Facturacion) :: */
-	public void nuevaFactura(FacturaVista vista){ 
-		Factura factura = new Factura();
-		/* factura.setCliente(buscarCliente(vista.getRemito().getCliente().getCUIT()));*/ 
-		factura.setFechaEmision(vista.getFechaEmision());
-		factura.setFechaVencimiento(vista.getFechaVencimiento());
-		//factura.setItemsFactura((List<FacturaItem>) generarItemsFactura(vista.getItemsFactura()));
-		factura.setNro(vista.getNro());
-		factura.setDescuentoContado(vista.getDescuentoContado());
-		//factura.setFinanciacion(vista.getFinanciacion());
-		facturas.add(factura);
-		
+	
+	public List<RemitoCliente> remitosAFacturar(){
+	List<RemitoCliente> rc = obtenerRemitosaFacturar();
+	return rc;
 	}
 	
-// TODO haay que hacer  bien este caso de uso. generar la conexion con el SrvDAO y la persistencia de la facutura
-// realizar la modificacion de la factura
-// realizar la busqueda de una factura en particular y del listado de facturas	
+	private List<RemitoCliente> obtenerRemitosaFacturar() {
+		List<RemitoCliente> lista = null;
+		for(RemitoCliente rcActual : remitosCliente)
+			if(rcActual.getEstadoEnvio()== "Emitido" || rcActual.getEstadoEnvio() == "Conformado")
+			{
+				lista.add(rcActual);
+			}
+		return lista;
+	}
+
+	
+	
+	public void nuevaFactura(FacturaVista vista){ 
+		Factura factura = new Factura();
+		List<RemitoCliente> lista = this.remitosAFacturar();
+		for(RemitoCliente rcActual : lista)
+		{
+			factura.setNro(vista.getNro());
+			factura.setFechaEmision(vista.getFechaEmision());
+			factura.setRemito(rcActual);
+			factura.setFinanciacion(generarFinanciacion(vista.getFinanciacion()));
+			factura.setDescuentoContado(vista.getDescuentoContado());
+			factura.setFechaVencimiento(vista.getFechaVencimiento());
+			factura.setItemsFactura(generarItemsFactura(vista.getItemsFactura()));
+			facturas.add(factura);
+			srvDAO.addFactura(factura);	
+			chgRemitoClienteSt(rcActual.getNro());
+		}
+	}
+	
+private Financiacion generarFinanciacion(FinanciacionVista financiacion) {
+		Financiacion f = new Financiacion();
+		f.setId(financiacion.getId());
+		f.setCuotas(financiacion.getCuotas());
+		f.setRecargo(financiacion.getRecargo());
+		
+		return f;
+	}
 	
 	private List<FacturaItem> generarItemsFactura(Vector<FacturaItemVista> itemsFacturaVista) {
 		Vector<FacturaItem> itemsFactura = new Vector<FacturaItem>();
@@ -291,8 +355,53 @@ public class Sistema {
 
 
 	
+	public List <Factura> obtenerFactura(){
+		facturas = srvDAO.getfacturas();
+		return facturas;
+	}
+	
+	public Factura getUniqueFactura(int NroFactura){
+		Factura f= null;
+		if(facturaExiste(NroFactura)){
+		f= srvDAO.getUniqueFactura(NroFactura);
+		}
+		return f;
+		}
+	
+
+
+	private boolean facturaExiste(int NroFactura){
+		boolean existe= false;
+		for(Factura f: facturas){
+		if(f.getNro() == NroFactura)
+		existe=true;
+		}
+		return existe;
+		}
+
 	
 	
+	public boolean chgFacturaSt(int nroFactura){
+		boolean retVal = false;
+		this.actualizarFacturaSt(nroFactura, "Cobrada");
+		retVal = srvDAO.updateFacturaSt(nroFactura, "Cobrada");
+		return retVal;
+	}	
+	
+private void actualizarFacturaSt(int nroFactura, String estado) {
+		Factura f = this.getUniqueFactura(nroFactura);
+		f.setEstado(estado);
+		this.actualizarFacturaEnColeccion(f);
+}
+	
+
+private void actualizarFacturaEnColeccion(Factura f){
+			for(Factura fActual: facturas){
+				if(fActual.sosFactura(f.getNro())){
+					 fActual.setEstado(f.getEstado());
+				}
+			}
+		}
 	
  /* :: CU07 - ABM STOCK RODAMIENTO :: */
 	/*ALTA DE ITEM DE STOCK*/
@@ -677,23 +786,190 @@ public class Sistema {
 
 /* TODO :: CU10 - Compra de rodamientos :: */
 
+	
+
+	public List<OrdenPedido> ordenPedidoAComprar(){
+		List<OrdenPedido> op = obtenerOrdenPedidoAComprar();
+		return op;
+		}
+		
+	@SuppressWarnings("null")
+	private List<OrdenPedido> obtenerOrdenPedidoAComprar() {
+			List<OrdenPedido> lista = null;
+			for(OrdenPedido opActual : ordenesPedido)
+				if(opActual.getEstado() == "Para Comprar" || opActual.getEstado() == "Emitida")
+				{
+					lista.add(opActual);
+				}
+			return lista;
+	}
+
+	
+	public void nuevoOrdenCompra(OrdenCompraVista vista)
+	{ 
+		List<OrdenPedido> lista = this.ordenPedidoAComprar();
+		for(OrdenPedido opActual : lista)
+		{
+			List<OrdenPedidoItem> ListaOPI = opActual.getItems();
+			for(OrdenPedidoItem opi : ListaOPI){
+			if (opi.getEstado()== "Pendiente")
+			{
+				OrdenCompra oc = new OrdenCompra();	
+				oc.setNro(vista.getNro());
+				oc.setFechaEmision(vista.getFechaEmision());
+				oc.setEstado(vista.getEstado());
+				oc.setEstadoCompletitud(vista.getEstadoCompletitud());
+				List<OrdenCompraItem> itemsOrdenCompra = null;
+				Proveedor pActual = opi.getProveedor();
+				oc.setProveedor(pActual);
+				chgOrdenPedidoItemSt(opi.getId(),"Pedido a Proveedor");
+				OrdenCompraItem oci = convertOpiToOci(opi);
+				itemsOrdenCompra.add(oci);
+				for(OrdenPedidoItem opi2 : ListaOPI)
+				{
+					if(opi2.getEstado()== "Pendiente" && opi2.getProveedor()== pActual)
+					{
+						chgOrdenPedidoItemSt(opi2.getId(), "Pedido a Proveedor");
+						OrdenCompraItem oci2 = convertOpiToOci(opi2);
+						itemsOrdenCompra.add(oci2);
+					}							
+				}
+				oc.setItems(itemsOrdenCompra);
+				ordenesCompra.add(oc);
+				srvDAO.addOrdenCompra(oc);	
+				chgOrdenPedidoStPedidoProveedor(opActual.getNro());
+			}
+		}
+		}
+	
+		
+	}
 
 
-public void nuevoOrdenCompra(OrdenCompraVista vista){ 
-	OrdenCompra oc = new OrdenCompra();
-	oc.setProveedor(getProveedor(vista.getProveedor().getRazonSocial())); 
-	oc.setFechaEmision(vista.getFechaEmision());
-	oc.setNro(vista.getNro());
-	oc.setEstado(vista.getEstado());
-	oc.setEstadoCompletitud(vista.getEstadoCompletitud());
-	oc.setItems(generarItemsOC(vista.getItems()));
-	oc.setOrdenPedidos(incorporarOrdenPedidos(vista.getOrdenPedidos()));
+	public List <OrdenCompra> obtenerOrdenCompra(){
+		ordenesCompra = srvDAO.getOrdenCompra();
+		return ordenesCompra;
+	}
+
+	public boolean chgOrdenCompraStCerrado(int nroOC){
+		boolean retVal = false;
+		this.actualizarOrdenCompraStCerrado(nroOC, "Cerrada");
+		retVal = srvDAO.updateOrdenCompraStCerrado(nroOC, "Cerrada");
+		return retVal;
+	}	
 	
-	ordenesCompra.add(oc);
+private void actualizarOrdenCompraStCerrado(int nroOC, String estado) {
+		OrdenCompra oc = this.getUniqueOrdenCompra(nroOC);
+		oc.setEstado(estado);
+		this.actualizarOrdenCompraEnColeccion(oc);
+}
 	
+
+private OrdenCompra getUniqueOrdenCompra(int nroOC) {
+
+	OrdenCompra op= null;
+	op= srvDAO.getUniqueOrdenCompra(nroOC);
+	return op;
+
 }
 
+private void actualizarOrdenCompraEnColeccion(OrdenCompra oc){
+			for(OrdenCompra ocActual: ordenesCompra){
+				if(ocActual.sosOrdenCompra(oc.getNro())){
+					 ocActual.setEstado(oc.getEstado());
+				}
+			}
+		}
 
+	
+		
+		public boolean chgOrdenPedidoItemSt(int id, String string)
+		{			
+				boolean retVal = false;
+				this.actualizarOrdenPedidoItemSt(id, string);
+				retVal = srvDAO.updateOPISt(id, string);
+				return retVal;
+			}	
+			
+		private void actualizarOrdenPedidoItemSt(int idOPI, String estado)
+		{
+				OrdenPedidoItem opi = this.getUniqueOPI(idOPI);
+				opi.setEstado(estado);
+				this.actualizarOPIEnColeccion(opi);
+		}
+			
+
+		private OrdenPedidoItem getUniqueOPI(int idOPI) 
+		{
+			OrdenPedidoItem opi= null;
+			opi= srvDAO.getUniqueOPI(idOPI);
+			return opi;
+		}
+
+		private void actualizarOPIEnColeccion(OrdenPedidoItem opi){
+					for(OrdenPedido opActual: ordenesPedido){
+						List<OrdenPedidoItem> lista = opActual.getItems();
+						for(OrdenPedidoItem opiActual : lista)
+						{
+							if(opiActual.getId() == opi.getId())
+							{
+							 opiActual.setEstado(opi.getEstado());
+							}
+						}
+					}
+		}
+		
+	
+		private OrdenCompraItem convertOpiToOci(OrdenPedidoItem opi) {
+				OrdenCompraItem oci = new OrdenCompraItem();
+				oci.setCantidad(opi.getCantidad());
+				oci.setEstado("Pendiente de recepcion");
+				oci.setPrecio(opi.getPrecio());
+				oci.setRodamiento(opi.getRodamiento());
+				//oci.setId(); Como se le asigna el valor desde aca... quizas llamando a la base de datos 
+				//para que me devuelva el ultimo ID y a eso le sumo uno??
+				return oci;
+			}
+
+		private boolean chgOrdenPedidoStPedidoProveedor(int nroOP) {
+				boolean retVal = false;
+				this.actualizarOrdenPedidoStPedidoProveedor(nroOP, "En proceso de Compra Proveedor");
+				retVal = srvDAO.updateOrdenPedidoStPedidoProveedor(nroOP, "En proceso de Compra Proveedor");
+				return retVal;
+			}	
+			
+		private void actualizarOrdenPedidoStPedidoProveedor(int nroOP, String estado) {
+				OrdenPedido op = this.getUniqueOrdenPedido(nroOP);
+				op.setEstado(estado);
+				this.actualizarOrdenPedidoEnColeccion(op);
+		}
+
+		private OrdenPedido getUniqueOrdenPedido(int nroOP) {
+			OrdenPedido op= null;
+			if(ordenPedidoExiste(nroOP)){
+			op= srvDAO.getUniqueOrdenPedido(nroOP);
+			}
+			return op;
+		}
+		
+
+		private boolean ordenPedidoExiste(int nroOP) {
+			boolean existe= false;
+			for(OrdenPedido op: ordenesPedido){
+			if(op.getNro() == nroOP)
+			existe=true;
+			}
+			return existe;
+		}
+
+		private void actualizarOrdenPedidoEnColeccion(OrdenPedido op){
+					for(OrdenPedido opActual: ordenesPedido){
+						if(opActual.sosOrdenPedido(op.getNro())){
+							 opActual.setEstado(op.getEstado());
+						}
+					}
+				}
+/*
 private List<OrdenPedido> incorporarOrdenPedidos(Vector<OrdenPedidoVista> ordenPedidosVista) 
 {
 	Vector<OrdenPedido> OP = new Vector<OrdenPedido>();
@@ -708,8 +984,8 @@ private List<OrdenPedido> incorporarOrdenPedidos(Vector<OrdenPedidoVista> ordenP
 		op.setNro(vista.getNro());
 		op.setOrigen(vista.getOrigen());
 		op.setOdv(getODV(vista.getOdv().getIdODV()));
-	//	op.setFinanciacion (vista.getFianciacion());
-	//	op.setCotizacion(vista.getCotizacion());
+		op.setFinanciacion (vista.getFianciacion());
+		op.setCotizacion(vista.getCotizacion());
 		
 		
 		ordenesPedido.add(op);
@@ -717,7 +993,7 @@ private List<OrdenPedido> incorporarOrdenPedidos(Vector<OrdenPedidoVista> ordenP
 	return OP;
 		
 	}
-
+*/
 private ODV getODV(int idODV){
 	ODV o= null;
 	if(odvExiste(idODV)){
@@ -730,14 +1006,15 @@ private ODV getODV(int idODV){
 private boolean odvExiste(int idODV){
 	boolean existe= false;
 	for(ODV o: odv){
-	if(o.getIdODV()== idODV)
-	existe=true;
+	if(o.getIdODV() == idODV)
+		existe=true;
 	}
 	return existe;
-	}
+}
+}
 
 
-
+/*
 private List<OrdenCompraItem> generarItemsOC(Vector<OrdenCompraItemVista> itemOrdenCompraVista) 
 {
 	Vector<OrdenCompraItem> itemsOC = new Vector<OrdenCompraItem>();
@@ -751,16 +1028,9 @@ private List<OrdenCompraItem> generarItemsOC(Vector<OrdenCompraItemVista> itemOr
 		itemsOC.add(item);
 	}		
 	return itemsOC;		
+	}
 }
 
-//TODO haay que hacer  bien este caso de uso. generar la conexion con el SrvDAO y la persistencia de la facutura
-//realizar la modificacion de la factura
-//realizar la busqueda de una factura en particular y del listado de facturas	
-
-
-
-
-}
 
 /* TODO :: CU11 - Recepción de Mercadería :: */
 /* TODO :: CU12 - Determinación del porcentaje de ganancia :: */

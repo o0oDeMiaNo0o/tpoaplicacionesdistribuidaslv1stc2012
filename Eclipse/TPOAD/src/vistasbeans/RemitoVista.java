@@ -9,6 +9,22 @@ public class RemitoVista {
 	private Vector<RemitoItemVista> items;
 	private int nro;
 	private String estadoEnvio;
+	
+	
+	
+	
+	
+	public RemitoVista(Date fecha, Vector<RemitoItemVista> items, int nro,
+			String estadoEnvio) {
+		super();
+		this.fecha = fecha;
+		this.items = items;
+		this.nro = nro;
+		this.estadoEnvio = estadoEnvio;
+	}
+	public RemitoVista() {
+		// TODO Auto-generated constructor stub
+	}
 	public Date getFecha() {
 		return fecha;
 	}
