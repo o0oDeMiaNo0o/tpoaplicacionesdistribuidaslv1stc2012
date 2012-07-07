@@ -28,9 +28,11 @@ public class OrdenPedido {
 	@OneToMany
 	@JoinColumn(name="FK_OrdenPedido", referencedColumnName="IdOrdenPedido")
 	private List<OrdenPedidoItem> items;
-	
+	@Column (name="Estado de Completitud")
 	private float estadoCompletitud;
+	@Column (name="Descuento Contado")
 	private int descuentoContado;
+	@Column (name="Fecha de Emision")
 	private Date fechaEmision;	
 	
 	@OneToMany
@@ -39,7 +41,9 @@ public class OrdenPedido {
 			inverseJoinColumns=@JoinColumn(name="FK_Cotizacion", referencedColumnName="IdCotizacion")
 	)
 	private List<Cotizacion> cotizacion;
+	@Column(name="Estado")
 	private String estado;
+	@Column(name="Origen")
 	private String origen;
 
 	public String getEstado() {
@@ -84,6 +88,20 @@ public class OrdenPedido {
 	public void setEstadoCompletitud(float estadoCompletitud) {
 		this.estadoCompletitud = estadoCompletitud;
 	}
+	public float calcularCompletitud()
+	{
+		int var = 0;
+		List<OrdenPedidoItem> opi = this.items;
+		for (OrdenPedidoItem opiActual : opi)
+		{
+			if(opiActual.getEstado()=="")
+				var = var+1;
+		}
+		
+		
+		return (float)(var/(this.items.size()));
+	}
+	
 	public int getDescuentoContado() {
 		return descuentoContado;
 	}
@@ -107,6 +125,9 @@ public class OrdenPedido {
 	}
 	public void setOrigen(String origen) {
 		this.origen = origen;
+	}
+	public boolean sosOrdenPedido(int nro2) {
+		return (nro2==this.nro);
 	}
 	
 }

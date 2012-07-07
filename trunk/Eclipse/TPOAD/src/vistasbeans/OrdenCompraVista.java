@@ -12,6 +12,9 @@ public class OrdenCompraVista {
 	private ProveedorVista proveedor;
 	private String estado;
 	private float estadoCompletitud;
+	
+	
+	
 	public Date getFechaEmision() {
 		return fechaEmision;
 	}
@@ -55,7 +58,6 @@ public class OrdenCompraVista {
 	public void setEstadoCompletitud(float estadoCompletitud) {
 		this.estadoCompletitud = estadoCompletitud;
 	}
-	
 	
 	
 }

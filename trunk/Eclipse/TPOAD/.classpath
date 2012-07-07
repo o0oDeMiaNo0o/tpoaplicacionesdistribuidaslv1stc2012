@@ -3,13 +3,22 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/hibernate3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/javassist-3.9.0.GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/mysql-connector-java-5.1.12-bin.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cuarto Año/Primer Cuatrimestre/Lenguajes Visuales/TPO/Codigo/Server/lib/slf4j-nop-1.5.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/javassist-3.4.GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/remoteVista.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cristian/Documents/Ingenieria en Informatica/Cursada 2012/LV/TPs/TP Obligatorio/tpo ad/tpoaplicacionesdistribuidaslv1stc2012/Eclipse/Librerias Hibernate/slf4j-simple-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

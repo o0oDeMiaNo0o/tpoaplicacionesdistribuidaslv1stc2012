@@ -8,11 +8,14 @@ public class OrdenCompraItem {
 	@Id @Column(name="IdOrdenCompraItem")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)		
 	private int id;
+	@Column (name="Cantidad")
 	private int cantidad;
+	@Column (name = "Precio")
 	private float precio;
 	@OneToOne
 	@JoinColumn(name="FK_Rodamiento", referencedColumnName="IdRodamiento")
 	private Rodamiento rodamiento;
+	@Column (name="Estado")
 	private String estado;
 
 	public String getEstado() {

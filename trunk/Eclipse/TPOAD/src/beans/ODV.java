@@ -6,11 +6,15 @@ import javax.persistence.*;
 @Table(name="ODV")
 public class ODV {
 
-	private String direccion;
-	private String responsable;
 	@Id @Column(name="IdODV")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int IdODV;
+	@Column (name="Direccion")
+	private String direccion;
+	@Column (name="responsable")
+	private String responsable;
+	
+	
 	public String getDireccion() {
 		return direccion;
 	}

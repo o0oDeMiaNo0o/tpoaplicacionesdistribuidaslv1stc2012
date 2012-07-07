@@ -11,9 +11,29 @@ public class FacturaVista {
 	private FinanciacionVista financiacion;
 	private int nro;
 	private RemitoClienteVista remito;
-	private Vector<ItemCotizacionVista> itemsFactura;
+	private Vector<FacturaItemVista> itemsFactura;
 	private String estado;
 
+	
+	
+	
+	public FacturaVista(int nro, Date fechaEmision, RemitoClienteVista remito,
+			FinanciacionVista financiacion, float descuentoContado,
+			Date fechaVencimiento, Vector<FacturaItemVista> itemsFactura,
+			String estado) {
+		super();
+		this.nro = nro;
+		this.fechaEmision = fechaEmision;
+		this.remito = remito;
+		this.financiacion = financiacion;
+		this.descuentoContado = descuentoContado;
+		this.fechaVencimiento = fechaVencimiento;
+		this.itemsFactura = itemsFactura;
+		this.estado = estado;
+	}
+	public FacturaVista() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getEstado() {
 		return estado;
 	}
@@ -53,10 +73,10 @@ public class FacturaVista {
 	public void setRemito(RemitoClienteVista remito) {
 		this.remito = remito;
 	}
-	public Vector<ItemCotizacionVista> getItemsFactura() {
+	public Vector<FacturaItemVista> getItemsFactura() {
 		return itemsFactura;
 	}
-	public void setItemsFactura(Vector<ItemCotizacionVista> itemsFactura) {
+	public void setItemsFactura(Vector<FacturaItemVista> itemsFactura) {
 		this.itemsFactura = itemsFactura;
 	}
 	

@@ -9,9 +9,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import beans.Cliente;
+import beans.Factura;
 import beans.ItemStock;
 import beans.ListaPrecio;
 import beans.ODV;
+import beans.OrdenCompra;
+import beans.OrdenPedido;
+import beans.OrdenPedidoItem;
 import beans.Proveedor;
 import beans.Remito;
 import beans.RemitoCliente;
@@ -350,7 +354,7 @@ public class HibernateDAO {
 		q.setInteger(0, nroRemito);
 		rmt = (RemitoCliente) q.uniqueResult();
 		session.close();
-		return null;
+		return rmt;
 	}
 
 	public RemitoTransporte getUniqueRemitoT(int nroRemito) {
@@ -360,7 +364,7 @@ public class HibernateDAO {
 		q.setInteger(0, nroRemito);
 		rmt = (RemitoTransporte) q.uniqueResult();
 		session.close();
-		return null;
+		return rmt;
 	}
 
 	public RemitoProveedor getUniqueRemitoP(int nroRemito) {
@@ -370,7 +374,7 @@ public class HibernateDAO {
 		q.setInteger(0, nroRemito);
 		rmt = (RemitoProveedor) q.uniqueResult();
 		session.close();
-		return null;
+		return rmt;
 	}
 
 	public int grabarItenStock(RemitoItem ri) {
@@ -381,7 +385,165 @@ public class HibernateDAO {
 		session.beginTransaction().commit();
 		return 0;
 	}
-	
+
+	public List<RemitoItem> getItemsRemito(int remitoID) {
+		Session session = getSession();
+		List<RemitoItem> retVal = null;
+		Query q = session.createQuery("from RemitoItem ri Where ri.RemitoID =?");
+		retVal = q.list();
+		session.close();
+		return retVal;
+	}
+
+	public boolean updateRemitoCliente(RemitoCliente rc) {
+		Session session = getSession();
+		int retVal = 0;
+		Query q = session.createQuery("update Remito s set s.Nro, s.Fecha = ?, s.Items, s.estadoEnvio = ?,s.Cliente,s.OrdenPedido, s.Estado");// ver esto por las colecciones
+		q.setInteger(0, rc.getNro());
+		q.setDate(1, rc.getFecha());
+		q.setParameter(2, rc.getItems());
+		q.setString(3, rc.getEstadoEnvio());	
+		q.setParameter(4, rc.getCliente());
+		q.setParameter(5, rc.getOrdenPedido());
+		q.setString(6, rc.getEstado());
+		retVal = q.executeUpdate();
+		session.close();
+		return (retVal > 0);
 		
+	}
+
+	public boolean updateRemitoClienteSt(int nroRemito, String estado) {
+		Session session = getSession();
+		int retVal = 0;
+		Query q = session.createQuery("update Remito r set r.estado = ? where s.id = ?");
+		q.setInteger(1, nroRemito);
+		q.setString(0, estado);
+		retVal = q.executeUpdate();
+		session.close();
+		return (retVal > 0);
+		
+	}
+
+	public int grabarFactura(Factura factura) {
+		Session session = getSession();
+		session.beginTransaction();
+		int retVal = (Integer) session.save(factura);
+		session.flush();
+		session.beginTransaction().commit();
+		return retVal;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Factura> getfacturas() {
+		Session session = getSession();
+		List<Factura> retVal = null;
+		Query q = session.createQuery("from Factura");
+		retVal = q.list();
+		session.close();
+		return retVal;
+	}
+
+	public Factura getUniqueFactura(int nroFactura) {
+		Session session = getSession();
+		Factura f = null;
+		Query q = session.createQuery("from Factura f where nro=?");
+		q.setInteger(0, nroFactura);
+		f = (Factura) q.uniqueResult();
+		session.close();
+		return f;
+	}
+
+	public boolean updateFacturaSt(int nroFactura, String estado) {
+		Session session = getSession();
+		int retVal = 0;
+		Query q = session.createQuery("update Factura f set f.estado = ? where s.id = ?");
+		q.setInteger(1, nroFactura);
+		q.setString(0, estado);
+		retVal = q.executeUpdate();
+		session.close();
+		return (retVal > 0);
+	}
+
+	public int grabarOrdenCompra(OrdenCompra oc) {
+		Session session = getSession();
+		session.beginTransaction();
+		int retVal = (Integer) session.save(oc);
+		session.flush();
+		session.beginTransaction().commit();
+		return retVal;
+		}
+
+	public boolean updateOPISt(int id, String string) {
+		Session session = getSession();
+		int retVal = 0;
+		Query q = session.createQuery("update OrdenPedidoItem opi set opi.estado = ? where s.id = ?");
+		q.setInteger(1, id);
+		q.setString(0, string);
+		retVal = q.executeUpdate();
+		session.close();
+		return (retVal > 0);
+	}
+
+	public OrdenPedidoItem getUniqueOPI(int idOPI) {
+		Session session = getSession();
+		OrdenPedidoItem opi = null;
+		Query q = session.createQuery("from OrdenPedidoItem opi where nro=?");
+		q.setInteger(0, idOPI);
+		opi = (OrdenPedidoItem) q.uniqueResult();
+		session.close();
+		return opi;
+	}
+
+	public boolean updateOrdenPedidoStPedidoProveedor(int nroOP, String string) {
+		Session session = getSession();
+		int retVal = 0;
+		Query q = session.createQuery("update OrdenPedido op set op.estado = ? where s.id = ?");
+		q.setInteger(1, nroOP);
+		q.setString(0, string);
+		retVal = q.executeUpdate();
+		session.close();
+		return (retVal > 0);
+		}
+
+	public OrdenPedido getUniqueOrdenPedido(int nroOP) {
+		Session session = getSession();
+		OrdenPedido op = null;
+		Query q = session.createQuery("from OrdenPedido op where nro=?");
+		q.setInteger(0, nroOP);
+		op = (OrdenPedido) q.uniqueResult();
+		session.close();
+		return op;
+	}
+
+	public List<OrdenCompra> getOrdenCompra() {
+		Session session = getSession();
+		List<OrdenCompra> retVal = null;
+		Query q = session.createQuery("from OrdenCompra");
+		retVal = q.list();
+		session.close();
+		return retVal;
+	}
+
+	public boolean updateOrdenCompraStCerrado(int nroOC, String string) {
+		Session session = getSession();
+		int retVal = 0;
+		Query q = session.createQuery("update OrdenCompra oc set oc.estado = ? where s.id = ?");
+		q.setInteger(1, nroOC);
+		q.setString(0, string);
+		retVal = q.executeUpdate();
+		session.close();
+		return (retVal > 0);
+	}
+
+	public OrdenCompra getUniqueOrdenCompra(int nroOC) {
+		Session session = getSession();
+		OrdenCompra oc = null;
+		Query q = session.createQuery("from OrdenCompra oc where nro=?");
+		q.setInteger(0, nroOC);
+		oc = (OrdenCompra) q.uniqueResult();
+		session.close();
+		return oc;	}
+
+	
 	
 }

@@ -72,4 +72,6 @@ public class Rodamiento {
 		return (new RodamientoVista(id, codigo, marca, nroSerie, origen, sufijo));
 	}	
 	
+	
+	
 }

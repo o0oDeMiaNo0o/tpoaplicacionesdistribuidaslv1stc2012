@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import vistasbeans.RemitoClienteVista;
+import vistasbeans.*;
+
 @Entity
 public class RemitoCliente extends Remito{
 	@OneToOne
@@ -16,6 +19,7 @@ public class RemitoCliente extends Remito{
 			inverseJoinColumns=@JoinColumn(name="FK_OrdenPedido", referencedColumnName="IdOrdenPedido")
 	)			
 	private List<OrdenPedido> ordenPedido;
+	@Column (name="Estado de envio", nullable=false)
 	private String estado;
 
 	public String getEstado() {
@@ -37,6 +41,14 @@ public class RemitoCliente extends Remito{
 	public void setOrdenPedido(List<OrdenPedido> ordenPedido) {
 		this.ordenPedido = ordenPedido;
 	}
+	public boolean sosRemitoCliente(int nro) {
+			return (nro == this.nro);
+	}
+	
+	public RemitoClienteVista vista(){
+		
+		return ( new RemitoClienteVista(fecha, items, nro, estadoEnvio, cliente, ordenPedido, estado));
+	}	
 	
 	
 	
