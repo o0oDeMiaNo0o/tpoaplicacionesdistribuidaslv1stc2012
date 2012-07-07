@@ -11,7 +11,13 @@ import org.hibernate.SessionFactory;
 import beans.Cliente;
 import beans.ItemStock;
 import beans.ListaPrecio;
+import beans.ODV;
 import beans.Proveedor;
+import beans.Remito;
+import beans.RemitoCliente;
+import beans.RemitoItem;
+import beans.RemitoProveedor;
+import beans.RemitoTransporte;
 import beans.Rodamiento;
 
 public class HibernateDAO {
@@ -275,5 +281,107 @@ public class HibernateDAO {
 	}
 	
 	/* FIN COMPARATIVA DE PRECIO */	
+
+	
+	/* Obtener ODV */
+	@SuppressWarnings("unchecked")
+	public ODV devolverODV(int idODV) {
+		Session session = getSession();
+		ODV odv = null;
+		Query q = session.createQuery("from ODV where IdODV=?");
+		q.setInteger(0, idODV);
+		odv = (ODV) q.uniqueResult();
+		session.close();
+		return odv;
+	}
+
+	public int grabarRemitoCliente(RemitoCliente remitoCl) {
+			Session session = getSession();
+			session.beginTransaction();
+			int retVal = (Integer) session.save(remitoCl);
+			session.flush();
+			session.beginTransaction().commit();
+			return retVal;
+		}
+
+	@SuppressWarnings("unchecked")
+	public List<RemitoCliente> getRemitoCl() {
+			Session session = getSession();
+			List<RemitoCliente> retVal = null;
+			Query q = session.createQuery("from Remito r Where e.Cliente not Null");
+			retVal = q.list();
+			session.close();
+			return retVal;
+		}
+	
+	@SuppressWarnings("unchecked")
+	public List<RemitoProveedor> getRemitoPrv() {
+		Session session = getSession();
+		List<RemitoProveedor> retVal = null;
+		Query q = session.createQuery("from Remito r Where e.Proveedor not Null");
+		retVal = q.list();
+		session.close();
+		return retVal;
+	}
+
+	public List<RemitoTransporte> getRemitoTpte() {
+		Session session = getSession();
+		List<RemitoTransporte> retVal = null;
+		Query q = session.createQuery("from Remito r Where e.ODV not Null");
+		retVal = q.list();
+		session.close();
+		return retVal;
+	}
+
+	public Remito getUniqueRemito(int nroRemito) {
+		Session session = getSession();
+		Remito rmt = null;
+		Query q = session.createQuery("from Remito where nro=?");
+		q.setInteger(0, nroRemito);
+		rmt = (Remito) q.uniqueResult();
+		session.close();
+		return rmt;
+	}
+
+	public RemitoCliente getUniqueRemitoC(int nroRemito) {
+		Session session = getSession();
+		RemitoCliente rmt = null;
+		Query q = session.createQuery("from Remito where nro=?");
+		q.setInteger(0, nroRemito);
+		rmt = (RemitoCliente) q.uniqueResult();
+		session.close();
+		return null;
+	}
+
+	public RemitoTransporte getUniqueRemitoT(int nroRemito) {
+		Session session = getSession();
+		RemitoTransporte rmt = null;
+		Query q = session.createQuery("from Remito where nro=?");
+		q.setInteger(0, nroRemito);
+		rmt = (RemitoTransporte) q.uniqueResult();
+		session.close();
+		return null;
+	}
+
+	public RemitoProveedor getUniqueRemitoP(int nroRemito) {
+		Session session = getSession();
+		RemitoProveedor rmt = null;
+		Query q = session.createQuery("from Remito where nro=?");
+		q.setInteger(0, nroRemito);
+		rmt = (RemitoProveedor) q.uniqueResult();
+		session.close();
+		return null;
+	}
+
+	public int grabarItenStock(RemitoItem ri) {
+		Session session = getSession();
+		session.beginTransaction();
+		int retVal = (Integer) session.save(ri);
+		session.flush();
+		session.beginTransaction().commit();
+		return 0;
+	}
+	
+		
 	
 }

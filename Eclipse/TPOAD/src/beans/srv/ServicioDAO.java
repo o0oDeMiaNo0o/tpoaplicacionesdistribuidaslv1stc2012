@@ -10,7 +10,13 @@ import beans.Financiacion;
 import beans.ItemPrecio;
 import beans.ItemStock;
 import beans.ListaPrecio;
+import beans.ODV;
 import beans.Proveedor;
+import beans.Remito;
+import beans.RemitoCliente;
+import beans.RemitoItem;
+import beans.RemitoProveedor;
+import beans.RemitoTransporte;
 import beans.Rodamiento;
 import beans.dao.HibernateDAO;
 
@@ -158,9 +164,63 @@ public class ServicioDAO {
 			_p.agregarListadoPrecio(_li);
 		}
 		return _p;
-	}	
+	}
+
 	
 	/* FIN LISTADO PRECIO */	
 	
-}
+	
+/* Obtener ODV */
+	
+	public ODV getodv(int idODV) {
+		return dao.devolverODV(idODV);
+	}
+
+/* Grabar Remito Cliente */
+	public int addRemitoCliente(RemitoCliente remitoCl) {
+		return dao.grabarRemitoCliente(remitoCl);
+		}
+
+	public List<RemitoCliente> getRemitoCl() {
+		return dao.getRemitoCl();
+	}
+
+	public List<RemitoProveedor> getRemitoPrv() {
+		return dao.getRemitoPrv();
+	}
+
+	public List<RemitoTransporte> getRemitoTpte() {
+		return dao.getRemitoTpte();
+	}
+
+	public Remito getUniqueRemito(int nroRemito) {
+		// TODO Auto-generated method stub
+		return dao.getUniqueRemito(nroRemito);
+	}
+
+	public RemitoCliente getUniqueRemitoC(int nroRemito) {
+		// TODO Auto-generated method stub
+		return dao.getUniqueRemitoC(nroRemito);
+	}
+
+	public RemitoTransporte getUniqueRemitoT(int nroRemito) {
+		// TODO Auto-generated method stub
+		return dao.getUniqueRemitoT(nroRemito);
+	}
+
+	public RemitoProveedor getUniqueRemitoP(int nroRemito) {
+		// TODO Auto-generated method stub
+		return dao.getUniqueRemitoP(nroRemito);
+	}
+
+	public int grabarItemStock(RemitoItem ri) {
+		// TODO Auto-generated method stub
+		return dao.grabarItenStock(ri);
+	}
+
+
+}	
+	
+
+
 
