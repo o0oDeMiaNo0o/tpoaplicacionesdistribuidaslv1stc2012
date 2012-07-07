@@ -134,27 +134,130 @@ public class Sistema {
 		RemitoCliente remitoCl = new RemitoCliente();
 		remitoCl.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
 		remitoCl.setFecha(vista.getFecha());
-		//Fijense que cuando hice lo Hibernate cada documento tiene sus
-		//Items: Cotizacion -> CotizacionItem; Factura -> FacturaItem y demas
-		//Ya no usamos una clase como item genérico de varios documentos ya que se hace dificil hacer las anotaciones
-		//remitoCl.setItems(generarItemsRemito(vista.getItems()));
+		remitoCl.setItems(generarItemsRemito(vista.getItems()));
 		remitoCl.setNro(vista.getNro());
 		remitoCl.setEstadoEnvio(vista.getEstadoEnvio());
 		remitosCliente.add(remitoCl);
-		
+		srvDAO.addRemitoCliente(remitoCl);
 	}
 	
+	
+	
+// TODO	public void chgRemitoClienteSt();
+	
+// TODO	public void chgRemitoProveedorSt();
+	
+// TODO	public void chgRemitoTransporteSt();
+	
+// TODO	public void chgItemPedidoSt();
+	
+	
+			
+	public List <RemitoCliente> obtenerRemitoCl(){
+		remitosCliente = srvDAO.getRemitoCl();
+		return remitosCliente;
+	}
+	
+	public List <RemitoProveedor> obtenerRemitoPrv(){
+		remitosProveedor = srvDAO.getRemitoPrv();
+		return remitosProveedor;
+	}
+	
+	public List <RemitoTransporte> obtenerRemitoTpte(){
+		remitosTransporte = srvDAO.getRemitoTpte();
+		return remitosTransporte;
+	}
+	
+	private ItemStock buscarItemStock(int IdItemStock){
+		for(ItemStock i:stock){
+			if(i.sosItemStock(IdItemStock)){
+				return i;
+			}
+		}
+		ItemStock i = srvDAO.getItemStock(IdItemStock);
+		if(i != null){
+			stock.add(i);
+			return i;
+		}	
+		return null;
+	}
+	
+	
+	
+	public Remito getUniqueRemito(int NroRemito){
+		Remito r= null;
+		if(remitoExiste(NroRemito)){
+		r= srvDAO.getUniqueRemito(NroRemito);
+		}
+		return r;
+		}
+	
+	public RemitoCliente getUniqueRemitoC(int NroRemito){
+		RemitoCliente r= null;
+		if(remitoExiste(NroRemito)){
+		r= srvDAO.getUniqueRemitoC(NroRemito);
+		}
+		return r;
+		}
+	
+	public RemitoTransporte getUniqueRemitoT(int NroRemito){
+		RemitoTransporte r= null;
+		if(remitoExiste(NroRemito)){
+		r= srvDAO.getUniqueRemitoT(NroRemito);
+		}
+		return r;
+		}
+	
+	public RemitoProveedor getUniqueRemitoP(int NroRemito){
+		RemitoProveedor r= null;
+		if(remitoExiste(NroRemito)){
+		r= srvDAO.getUniqueRemitoP(NroRemito);
+		}
+		return r;
+		}
 
-	private List<RemitoItem> generarItemsRemito(Vector<ItemCotizacionVista> itemsRemVista) {
+	private boolean remitoExiste(int NroRemito){
+		boolean existe= false;
+		for(Remito rc: remitosCliente){
+		if(rc.getNro()== NroRemito)
+		existe=true;
+		}
+		for(Remito rp: remitosProveedor){
+			if (rp.getNro()== NroRemito)
+				existe=true;
+		}
+		for(Remito rt: remitosTransporte){
+			if(rt.getNro()==NroRemito)
+				existe=true;
+		}
+		return existe;
+		}
+	
+	
+	
+	
+
+	private List<RemitoItem> generarItemsRemito(Vector<RemitoItemVista> itemsRemVista) {
 		Vector<RemitoItem> itemsRemito = new Vector<RemitoItem>();
-		for(ItemCotizacionVista vista: itemsRemVista){
+		for(RemitoItemVista vista: itemsRemVista){
 			RemitoItem item=new RemitoItem();
 			item.setCantidad(vista.getCantidad());
 			item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
+			
 			itemsRemito.add(item);
 		}		
 		return itemsRemito;		
 	}
+	
+
+		
+	private int grabarItemRemito(RemitoItem ri){
+		return srvDAO.grabarItemStock(ri);
+	}	
+	  
+	
+	
+	
 	/* :: CU05 - Venta de Rodamientos (Facturacion) :: */
 	public void nuevaFactura(FacturaVista vista){ 
 		Factura factura = new Factura();
@@ -169,7 +272,10 @@ public class Sistema {
 		
 	}
 	
-
+// TODO haay que hacer  bien este caso de uso. generar la conexion con el SrvDAO y la persistencia de la facutura
+// realizar la modificacion de la factura
+// realizar la busqueda de una factura en particular y del listado de facturas	
+	
 	private List<FacturaItem> generarItemsFactura(Vector<FacturaItemVista> itemsFacturaVista) {
 		Vector<FacturaItem> itemsFactura = new Vector<FacturaItem>();
 		for(FacturaItemVista vista: itemsFacturaVista){
@@ -564,31 +670,78 @@ public class Sistema {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-}
+
 
 /* :: CU09 - Administrar listas de precios de proveedores ::  GO TO Proveedores.java*/
 
 
 /* TODO :: CU10 - Compra de rodamientos :: */
 
+
+
 public void nuevoOrdenCompra(OrdenCompraVista vista){ 
 	OrdenCompra oc = new OrdenCompra();
-	oc.setProveedor(getProveedor(vista.getProveedor().getNro())); 
+	oc.setProveedor(getProveedor(vista.getProveedor().getRazonSocial())); 
 	oc.setFechaEmision(vista.getFechaEmision());
 	oc.setNro(vista.getNro());
 	oc.setEstado(vista.getEstado());
 	oc.setEstadoCompletitud(vista.getEstadoCompletitud());
-	oc.setItems(vista.getItems());
-	oc.setOrdenPedidos(vista.getOrdenPedidos());
-	oc.
+	oc.setItems(generarItemsOC(vista.getItems()));
+	oc.setOrdenPedidos(incorporarOrdenPedidos(vista.getOrdenPedidos()));
+	
 	ordenesCompra.add(oc);
 	
 }
 
 
-private List<OrdenCompraItem> generarItemsOC(Vector<OrdenPedidoItemVista> itemOrdenCompraVista) {
+private List<OrdenPedido> incorporarOrdenPedidos(Vector<OrdenPedidoVista> ordenPedidosVista) 
+{
+	Vector<OrdenPedido> OP = new Vector<OrdenPedido>();
+	for(OrdenPedidoVista vista: ordenPedidosVista)
+	{
+		OrdenPedido op=new OrdenPedido();
+		op.setCliente(getCliente(vista.getCliente().getCUIT()));
+		op.setDescuentoContado(vista.getDescuentoContado());
+		op.setEstado(vista.getEstado());
+		op.setEstadoCompletitud(vista.getEstadoCompletitud());
+		op.setFechaEmision(vista.getFechaEmision());
+		op.setNro(vista.getNro());
+		op.setOrigen(vista.getOrigen());
+		op.setOdv(getODV(vista.getOdv().getIdODV()));
+	//	op.setFinanciacion (vista.getFianciacion());
+	//	op.setCotizacion(vista.getCotizacion());
+		
+		
+		ordenesPedido.add(op);
+	}		
+	return OP;
+		
+	}
+
+private ODV getODV(int idODV){
+	ODV o= null;
+	if(odvExiste(idODV)){
+	o= srvDAO.getodv(idODV);
+	}
+	
+	return o;
+	}
+	
+private boolean odvExiste(int idODV){
+	boolean existe= false;
+	for(ODV o: odv){
+	if(o.getIdODV()== idODV)
+	existe=true;
+	}
+	return existe;
+	}
+
+
+
+private List<OrdenCompraItem> generarItemsOC(Vector<OrdenCompraItemVista> itemOrdenCompraVista) 
+{
 	Vector<OrdenCompraItem> itemsOC = new Vector<OrdenCompraItem>();
-	for(OrdenPedidoItemVista vista: itemOrdenCompraVista)
+	for(OrdenCompraItemVista vista: itemOrdenCompraVista)
 	{
 		OrdenCompraItem item=new OrdenCompraItem();
 		item.setCantidad(vista.getCantidad());
@@ -598,23 +751,19 @@ private List<OrdenCompraItem> generarItemsOC(Vector<OrdenPedidoItemVista> itemOr
 		itemsOC.add(item);
 	}		
 	return itemsOC;		
-	}
+}
+
+//TODO haay que hacer  bien este caso de uso. generar la conexion con el SrvDAO y la persistencia de la facutura
+//realizar la modificacion de la factura
+//realizar la busqueda de una factura en particular y del listado de facturas	
 
 
 
-private List<RemitoItem> generarItemsRemito(Vector<ItemCotizacionVista> itemsRemVista) {
-	Vector<RemitoItem> itemsRemito = new Vector<RemitoItem>();
-	for(ItemCotizacionVista vista: itemsRemVista){
-		RemitoItem item=new RemitoItem();
-		item.setCantidad(vista.getCantidad());
-		item.setRodamiento(buscarRodamiento(vista.getRodamiento().getCodigo()));
-		itemsRemito.add(item);
-	}		
-	return itemsRemito;		
 
+}
 
 /* TODO :: CU11 - Recepción de Mercadería :: */
 /* TODO :: CU12 - Determinación del porcentaje de ganancia :: */
-/* TODO :: CU13 - Determinación del porcentaje de ganancia :: */
+
 
 
