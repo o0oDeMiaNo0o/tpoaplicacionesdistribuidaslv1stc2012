@@ -12,16 +12,10 @@ public class ImplementsRemota extends UnicastRemoteObject implements InterfazRem
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static ServicioDAO srv = new ServicioDAO();
 	
 	public ImplementsRemota() throws RemoteException {
-		super();
-		//srv = new ServicioDAO();
+		
 	}
 
-	@Override
-	public ProveedorVista comparativaDePrecio(String nroSerie, String marca, List<String> marcas, String origen) throws RemoteException {
-		return srv.comparativaDePrecio(nroSerie, marca, marcas, origen);
-	}
 	
 }
