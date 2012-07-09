@@ -61,7 +61,7 @@ public class Sistema {
 	}
 	
 	
-	//CU 1 Recepci髇 de solicitudes de cotizaci髇 de rodamientos
+	//CU 1 Recepci贸n de solicitudes de cotizaci贸n de rodamientos
 	public void nuevaSolicitudCotizacion(SolicitudCotizacionVista vista){ 
 		SolicitudCotizacion solicitud = new SolicitudCotizacion();
 		solicitud.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
@@ -105,7 +105,7 @@ public class Sistema {
 		return r;		
 	}
 	
-	//CU 2 Solicitud de cotizaci髇  - - falta especificacion
+	//CU 2 Solicitud de cotizaci贸n  - - falta especificacion
 	public Vector<SolicitudCotizacionVista> solicitudesCotizacion(){
 		Vector<SolicitudCotizacionVista> solicitudes=new Vector<SolicitudCotizacionVista>();
 		for(SolicitudCotizacion c: solicitudesCotizacion)
@@ -114,7 +114,7 @@ public class Sistema {
 	}
 	
 	
-	//CU 3 Recepci髇 de orden de pedido - - Falta especificacion
+	//CU 3 Recepci贸n de orden de pedido - - Falta especificacion
 	//no dice donde se agregan los nuevos items si es que se solicitan
 	public Vector<ItemCotizacionVista> itemsCotizacionesSolicitadasDeUnCliente(String cuil){
 		Vector<ItemCotizacionVista> resultado = new Vector<ItemCotizacionVista>();
@@ -129,7 +129,7 @@ public class Sistema {
 		return resultado;
 	}
 	
-	/* :: CU04 - Env韔 de rodamientos (Remito) :: */
+	/* :: CU04 - Env铆o de rodamientos (Remito) :: */
 	public void nuevoRemito_a_Cliente(RemitoClienteVista vista){ 
 		RemitoCliente remitoCl = new RemitoCliente();
 		remitoCl.setCliente(buscarCliente(vista.getCliente().getCUIT())); 
@@ -426,7 +426,7 @@ private void actualizarFacturaEnColeccion(Factura f){
 		return id;
 	}
 	
-	/*BAJA L脫GICA DE ITEM STOCK*/
+	/*BAJA L脙聯GICA DE ITEM STOCK*/
 	public ItemStock ItemStock_Eliminacion_Inicio(int IdItemStock){
 		ItemStock i = this.buscarItemStock(IdItemStock);
 		if(i.getEstado() == "Deshabilitado"){
@@ -434,74 +434,8 @@ private void actualizarFacturaEnColeccion(Factura f){
 		}
 		return i;
 	}
-	
-	public boolean ItemStock_Eliminacion_Confirmacion(int IdItemStock){
-		boolean retVal = false;
-		actualizarItemStockEnColeccion(IdItemStock, "Deshabilitado");
-		retVal = srvDAO.updateEstadoItemStock(IdItemStock, "Deshabilitado");
-		return retVal;
-	}	
- 	
-	/*MODIFICACION DE ITEM STOCK*/	
-	public ItemStock ItemStock_Modificacion_Inicio(int IdItemStock){
-		return this.buscarItemStock(IdItemStock);		
-	}
-
-	public boolean ItemStock_Modificacion_Confirmacion(int idRod, String codigo, String marca, String nroSerie, String origen, String sufijo, int idItem, int cantidad,String estado,float precioCosto,float precioVenta, Date ultimaActualizacion){
-		 boolean retVal = false;
-		 Rodamiento r = generarRodamiento(idRod, codigo,  marca,  nroSerie,  origen,  sufijo);
-		 ItemStock i = generarItemStock(idItem, cantidad, estado, precioCosto, precioVenta,  r,  ultimaActualizacion);
-		 retVal = srvDAO.updateItemStock(i);
-		 if(retVal){
-			 actualizarRodamientoEnColeccion(r);
-			 actualizarItemStockEnColeccion(i);			 
-		 }
-		 return retVal;
-	}
-	
-	/*METODOS PRIVADOS*/
-	private void actualizarRodamientoEnColeccion(Rodamiento rn){
-		for(Rodamiento rActual: rodamientos){
-			if(rActual.sosRodamiento(rn.getId())){
-				 rActual.setCodigo(rn.getCodigo());
-				 rActual.setMarca(rn.getMarca());
-				 rActual.setNroSerie(rn.getNroSerie());
-				 rActual.setOrigen(rn.getOrigen());
-				 rActual.setSufijo(rn.getSufijo());
-			}
-		}
-	}
-	
-	private void actualizarItemStockEnColeccion(ItemStock i){
-		for(ItemStock iActual: stock){
-			if((iActual).sosItemStock(i.getId())){
-				iActual.setCantidad(i.getCantidad());
-				iActual.setEstado(i.getEstado());
-				iActual.setPrecioCosto(i.getPrecioCosto());
-				iActual.setPrecioVenta(i.getPrecioVenta());
-				iActual.setUltimaActualizacion(i.getUltimaActualizacion());
-				iActual.setRodamiento(i.getRodamiento());
-			}
-		}
-	}
-
-	private void actualizarItemStockEnColeccion(int id, String estado){
-		for(ItemStock iActual: stock){
-			if(iActual.sosItemStock(id)){
-				iActual.setEstado(estado);
-			}
-		}
-	}	
-	
-	private ItemStock buscarItemStockAlta(String codigo, float precioCosto){
-		for(ItemStock i:stock){
-			if(i.getPrecioCosto() == precioCosto && i.getRodamiento().getCodigo() == codigo && i.getId() == 0){
-				return i;
-			}
-		}
-		return null;
-	}
-
+ 
+	 
 	private ItemStock buscarItemStock(int IdItemStock){
 		for(ItemStock i:stock){
 			if(i.sosItemStock(IdItemStock)){
@@ -725,63 +659,16 @@ private void actualizarFacturaEnColeccion(Factura f){
 			}
 		}
 	}
-	
-	public void listadoPrecio_agregarItemPrecio(int proveedor, int nroReemplazo, int rodamiento, int cantidad, float precioCosto, float precioVenta){
-		ItemPrecio i = new ItemPrecio();
-		i.setCantidad(cantidad);
-		i.setPrecioCosto(precioCosto);
-		i.setPrecioVenta(precioVenta);
-		Rodamiento r = this.buscarRodamiento(rodamiento);
-		i.setRodamiento(r);
-		
-		for(Proveedor p: proveedores){
-			if(p.sosProveedor(proveedor)){
-				for(ListaPrecio l: p.getListaPrecios()){
-					if(l.getNro() == 0 && l.getNroListReemplazo() == nroReemplazo){
-						l.agregarItemPrecio(i);
-					}
-				}
-			}
-		}
-	}
-
-	public boolean listadoPrecio_confirmar(int proveedor, int nroReemplazo){
-		ListaPrecio li = null; int idRet = 0; Proveedor prov = null;
-		for(Proveedor p: proveedores){
-			if(p.sosProveedor(proveedor)){
-				prov = p;
-				for(ListaPrecio l: p.getListaPrecios()){
-					if(l.getNro() == 0 && l.getNroListReemplazo() == nroReemplazo){
-						li = l;
-					}
-				}
-			}
-		}
-		if(li != null){
-			idRet = srvDAO.grabarListaPrecio(li);
-			li.setNro(idRet);
-			srvDAO.actualizarProveedor(prov);
-		}
-		return (idRet > 0);
-	}
+  
 	
 	/* FIN CU 9 */
 	
-	/* :: CU 13 COMPARATIVA DE PRECIO :: */
-
-	public ProveedorVista comparativaPrecio_iniciar_(String nroSerie, String marca, List <String> marcas, String origen){
-		return srvDAO.comparativaDePrecio(nroSerie, marca, marcas, origen);
-	}	
-	
-	/* FIN CU 13*/	
 	
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-
-/* :: CU09 - Administrar listas de precios de proveedores ::  GO TO Proveedores.java*/
 
 
 /* TODO :: CU10 - Compra de rodamientos :: */
@@ -1032,8 +919,8 @@ private List<OrdenCompraItem> generarItemsOC(Vector<OrdenCompraItemVista> itemOr
 }
 
 
-/* TODO :: CU11 - Recepci髇 de Mercader韆 :: */
-/* TODO :: CU12 - Determinaci髇 del porcentaje de ganancia :: */
+/* TODO :: CU11 - Recepci贸n de Mercader铆a :: */
+/* TODO :: CU12 - Determinaci贸n del porcentaje de ganancia :: */
 
 
 
