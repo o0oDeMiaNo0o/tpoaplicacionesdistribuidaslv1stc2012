@@ -46,50 +46,11 @@ public class HibernateDAO {
 	
    /*CUO7 STOCK RODAMIENTOS */
 	/*ABM STOCK RODAMIENTOS*/
-	@SuppressWarnings("unchecked")
-	public ItemStock getItemStock(int id){
-		Session session = getSession();
-		ItemStock retVal = null;
-		Query q = session.createQuery("from ItemStock s where s.id = ?");
-		q.setInteger(0, id);
-		retVal = (ItemStock) q.uniqueResult();
-		session.close();
-		return retVal;
-	}		
 
-	@SuppressWarnings("unchecked")
-	public Rodamiento getRodamiento(int id){
-		Session session = getSession();
-		Rodamiento retVal = null;
-		Query q = session.createQuery("from Rodamiento r where r.id = ?");
-		q.setInteger(0, id);
-		retVal = (Rodamiento) q.uniqueResult();
-		session.close();
-		return retVal;
-	}			
-	
-	public int grabarRodamiento(Rodamiento r){
-		Session session = getSession();
-		session.beginTransaction();
-		int retVal = (Integer) session.save(r);
-		session.flush();
-		session.beginTransaction().commit();
-		return retVal;
-	}
-
-	public int grabarItemStock(ItemStock i){
-		Session session = getSession();
-		session.beginTransaction();
-		int retVal = (Integer) session.save(i);		
-		session.flush();
-		session.beginTransaction().commit();
-		return retVal;
-	}
-	
 	public boolean updateEstadoItemStock(int id, String estado){
 		Session session = getSession();
 		int retVal = 0;
-		Query q = session.createQuery("update ItemStock s set s.estado = ? where s.id = ?");
+		Query q = session.createQuery("update StockRdamient s set s.estado = ? where s.id = ?");
 		q.setInteger(1, id);
 		q.setString(0, estado);
 		retVal = q.executeUpdate();
@@ -100,7 +61,7 @@ public class HibernateDAO {
 	public boolean updateItemStock(ItemStock i){
 		Session session = getSession();
 		int retVal = 0;
-		Query q = session.createQuery("update ItemStock s set s.cantidad = ?, s.estado = ?, s.precioCosto = ?, s.precioVenta = ?, s.ultimaActualizacion = ? where s.id = ?");
+		Query q = session.createQuery("update Stock s set s.cantidad = ?, s.estado = ?, s.precioCosto = ?, s.precioVenta = ?, s.ultimaActualizacion = ? where s.id = ?");
 		q.setInteger(0, i.getCantidad());
 		q.setString(1, i.getEstado());
 		q.setFloat(2, i.getPrecioCosto());
@@ -171,15 +132,6 @@ public class HibernateDAO {
 		return cliente.get(0);
 	}
 
-	public void grabarProveedor(Proveedor p) {
-		Session session= getSession();
-		session.beginTransaction();
-		session.persist(p);
-		session.flush();
-		session.beginTransaction().commit();
-		
-	}
-
 	@SuppressWarnings("unchecked")
 	public Proveedor devolverProveedor(String razonSocial) {
 		// TODO Auto-generated method stub
@@ -233,58 +185,14 @@ public class HibernateDAO {
 	
 	/* FIN CU09 - ABM */
 	
-	/* COMPARATIVA DE PRECIO */
+
 	
 	
 	@SuppressWarnings("unchecked")
-	public List <Object[]> comparativaDePrecio(String nroSerie, String marca, List <String> marcas, String origen){
-		String sQuery = "select p, li, it, r from Proveedor p join p.listaPrecios li join li.items it join it.rodamiento r where li.id = " +
-						"(select max(l.id) from Proveedor pr join pr.listaPrecios l where l.id = li.id) " +
-						"and r.nroSerie = :nroSerie ";
-		
-		
-		if(!marca.equals("") && !marcas.isEmpty()){ //Agrego la marca y su listado
-			sQuery = sQuery +"and (r.marca = :marca or r.marca in (:marcas)) ";
-		}else{
-			if(!marca.equals("") && marcas.isEmpty()){ //Agrego la Marca
-				sQuery = sQuery + "and r.marca = :marca ";
-			}
-			if(marca.equals("") && !marcas.isEmpty()){ //Agrego el listado de marcas
-				sQuery = sQuery + "and r.marca in (:marcas) ";
-			}
-		}
-		if(!origen.equals("")){ //Agrego el origen
-			sQuery = sQuery + "and origen = :origen ";			
-		}
-
-		
-		Session session = getSession();
-		List <Object[]> retVal = null;
-		Query q = session.createQuery(sQuery);
-		
-		
-		q.setString("nroSerie", nroSerie);
-		if(!marca.equals("") && !marcas.isEmpty()){ //Agrego la marca y su listado
-			q.setString("marca", marca);
-			q.setParameterList("marcas", marcas);
-		}else{
-			if(!marca.equals("") && marcas.isEmpty()){ //Agrego la Marca
-				q.setString("marca", marca);
-			}
-			if(marca.equals("") && !marcas.isEmpty()){ //Agrego el listado de marcas
-				q.setParameterList("marcas", marcas);
-			}
-		}		
-		if(!origen.equals("")){ //Agrego el origen
-			q.setString("origen", origen);
-		}
-		
-		retVal = q.list();
-		session.close();
-		return retVal;		
+	public List <ItemPrecio> comparativaDePrecio(String nroSerie, String marca, List <String> marcas, String origen){
+	  //Mirar
 	}
 	
-	/* FIN COMPARATIVA DE PRECIO */	
 
 	
 	/* Obtener ODV */
