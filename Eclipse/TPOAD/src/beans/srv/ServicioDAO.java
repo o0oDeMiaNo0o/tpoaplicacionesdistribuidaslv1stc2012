@@ -96,78 +96,17 @@ public class ServicioDAO {
 	public List<Proveedor> getProveedor(){
 		return dao.getProveedor();
 	}	
-	
-	@SuppressWarnings("unchecked")
-	public Proveedor getProveedor(int id){
-		return dao.getProveedor(id);
-	}		
-	
-	public int grabarListaPrecio(ListaPrecio l){
-		return dao.grabarListaPrecio(l);
-	}
-	
-	public void actualizarProveedor(Proveedor p){
-		dao.actualizarProveedor(p);
-	}
+  
 	
 	/*FIN LISTADO DE PRECIO*/
 	
 	/* :: OBTENER MEJOR PRECIO :: */	
 	public ProveedorVista comparativaDePrecio(String nroSerie, String marca, List <String> marcas, String origen){
-		return obtenerMejorPrecioRodamiento(dao.comparativaDePrecio(nroSerie, marca, marcas, origen)).vista();
+		//Reveer
 	}		
 	
 	private Proveedor obtenerMejorPrecioRodamiento(List <Object[]> lista){
-		ListaPrecio l = null;
-		Proveedor p = null;
-		Proveedor _p = null;
-		Rodamiento r = null;
-		ItemPrecio it = null;
-		float mejorPrecio = 0;
-		Object[] tmp = null;
-		
-		if(!lista.isEmpty()){
-			tmp = lista.get(0);
-			it = (ItemPrecio) lista.get(0)[2];
-			mejorPrecio = it.getPrecioVenta();
-		
-			for(Object[] o : lista){
-				it = (ItemPrecio) o[2];
-				
-				if(it.getPrecioVenta() < mejorPrecio){
-					mejorPrecio = it.getPrecioVenta();
-					tmp = o;
-				}				
-			}
-	
-			p = (Proveedor) tmp[0];
-			l = (ListaPrecio) tmp[1];
-			it = (ItemPrecio) tmp[2];
-			r = (Rodamiento) tmp[3];
-						
-			ItemPrecio _it = new ItemPrecio();
-			_it.setCantidad(it.getCantidad());
-			_it.setId(it.getId());
-			_it.setPrecioCosto(it.getPrecioCosto());
-			_it.setPrecioVenta(it.getPrecioVenta());
-			_it.setRodamiento(r);
-			
-			ListaPrecio _li = new ListaPrecio();
-			_li.setDescuentoContado(l.getDescuentoContado());
-			_li.setFechaEmision(l.getFechaEmision());
-			_li.agregarItemPrecio(_it);
-			_li.setNro(l.getNro());
-			_li.setFinanciacion(new ArrayList<Financiacion>());
-			_li.setNroListReemplazo(l.getNroListReemplazo());
-			
-			_p = new Proveedor();
-			_p.setDireccion(p.getDireccion());
-			_p.setNro(p.getNro());
-			_p.setRazonSocial(p.getRazonSocial());
-			_p.setTelefono(p.getTelefono());
-			_p.agregarListadoPrecio(_li);
-		}
-		return _p;
+		//Reveer esto
 	}
 
 	
