@@ -1,0 +1,1 @@
+Desarrollo del tratamiento de pedidos de cotización, compra, recepción de mercaderías,entrega del pedido y facturación de rodamientos para consumo industrial.
